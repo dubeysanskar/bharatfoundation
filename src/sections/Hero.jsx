@@ -27,9 +27,13 @@ const Hero = () => {
                 <p className="hero-subtitle">
                     {t.hero.subtitle}
                 </p>
-                <div className="hero-buttons">
-                    <button className="btn-primary" onClick={scrollToHistory}>{t.hero.knowMore}</button>
-                    <button className="btn-secondary" onClick={navigateToDonate}>{t.hero.donateToday}</button>
+                <div className="hero-cta">
+                    <button onClick={() => document.getElementById('projects').scrollIntoView({ behavior: 'smooth' })} className="cta-button primary">
+                        {t.hero.ourWork}
+                    </button>
+                    <button onClick={() => document.getElementById('contact').scrollIntoView({ behavior: 'smooth' })} className="cta-button secondary">
+                        {t.hero.joinUs}
+                    </button>
                 </div>
             </div>
             <div className="hero-background-text">

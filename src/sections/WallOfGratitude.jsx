@@ -58,13 +58,13 @@ const WallOfGratitude = () => {
                 <div className="first-donors-grid">
                     <div className="first-donor-card">
                         <div className="donor-img-wrapper">
-                            <img src="/assets/donors/ManasviMishra.png" alt="Manasvi Mishra" className="donor-img" loading="lazy" />
+                            <img src="/assets/donors/ManasviMishra.png" alt="Manasvi Mishra - Bharat Foundation Donor" className="donor-img" loading="lazy" />
                         </div>
                         <p className="donor-name">Manasvi Mishra</p>
                     </div>
                     <div className="first-donor-card">
                         <div className="donor-img-wrapper">
-                            <img src="/assets/donors/Paritosh.png" alt="Paritosh" className="donor-img" loading="lazy" />
+                            <img src="/assets/donors/Paritosh.png" alt="Paritosh - Bharat Foundation Donor" className="donor-img" loading="lazy" />
                         </div>
                         <p className="donor-name">Paritosh</p>
                     </div>
