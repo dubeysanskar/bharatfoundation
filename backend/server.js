@@ -30,7 +30,9 @@ const upload = multer({ storage: storage });
 
 // Nodemailer Transporter
 const transporter = nodemailer.createTransport({
-    service: 'gmail',
+    host: 'smtp.gmail.com',
+    port: 465,
+    secure: true, // use SSL
     auth: {
         user: 'bharatfoundation4@gmail.com',
         pass: 'mxke ntoz yjgb lqmm'
