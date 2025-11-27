@@ -1,0 +1,28 @@
+.footer {
+    background-color: var(--primary-blue);
+    color: white;
+    /* Text color orange in image? No, mostly white/orange */
+    padding: 3rem 2rem;
+    text-align: center;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.footer-title {
+    color: var(--accent-orange);
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+}
+
+.footer-copyright {
+    color: #8899a6;
+    font-size: 0.8rem;
+    margin-bottom: 1rem;
+}
+
+.footer-socials {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    color: var(--accent-orange);
+    font-size: 1.2rem;
+}

@@ -1,0 +1,71 @@
+.wall-of-gratitude {
+    padding: 4rem 2rem;
+    background-color: var(--primary-blue);
+    color: white;
+    text-align: center;
+}
+
+.wall-title {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: var(--accent-orange);
+    margin-bottom: 0.5rem;
+    text-decoration: underline;
+    text-decoration-color: var(--accent-orange);
+    text-underline-offset: 8px;
+}
+
+.wall-subtitle {
+    color: var(--text-light-gray);
+    margin-bottom: 3rem;
+    font-size: 1rem;
+}
+
+.donor-list-container {
+    max-width: 800px;
+    margin: 0 auto;
+    border: 1px solid var(--accent-orange);
+    border-radius: 8px;
+    height: 100px;
+    /* Reduced height for marquee strip */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(255, 255, 255, 0.05);
+    overflow: hidden;
+    position: relative;
+}
+
+.donor-list-placeholder {
+    color: var(--text-light-gray);
+    font-style: italic;
+}
+
+.donor-marquee {
+    width: 100%;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.marquee-content {
+    display: inline-block;
+    animation: marquee 20s linear infinite;
+}
+
+.donor-item {
+    display: inline-block;
+    padding: 0 2rem;
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: white;
+}
+
+@keyframes marquee {
+    0% {
+        transform: translateX(0);
+    }
+
+    100% {
+        transform: translateX(-50%);
+    }
+}

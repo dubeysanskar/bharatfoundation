@@ -1,0 +1,88 @@
+.projects {
+    padding: 4rem 2rem;
+    background-color: white;
+    text-align: center;
+}
+
+.projects-title {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: var(--primary-blue);
+    margin-bottom: 3rem;
+    border-bottom: 4px solid var(--accent-orange);
+    display: inline-block;
+    padding-bottom: 0.5rem;
+}
+
+.projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.project-card {
+    background-color: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    text-align: left;
+    transition: transform 0.3s ease;
+}
+
+.project-card:hover {
+    transform: translateY(-5px);
+}
+
+.project-image {
+    height: 200px;
+    background-color: #ddd;
+    /* Placeholder color */
+    background-size: cover;
+    background-position: center;
+}
+
+/* You would ideally replace these with actual image URLs or imports */
+.gaushala-img {
+    background-image: url('https://placehold.co/600x400/orange/white?text=Gaushala');
+}
+
+.mandir-img {
+    background-image: url('https://placehold.co/600x400/darkblue/white?text=Shiv+Mandir');
+}
+
+.project-content {
+    padding: 1.5rem;
+}
+
+.project-name {
+    color: var(--accent-orange);
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin-bottom: 0.8rem;
+}
+
+.project-desc {
+    color: #555;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    margin-bottom: 1.5rem;
+}
+
+.project-btn {
+    background-color: var(--primary-blue);
+    color: white;
+    border: none;
+    padding: 0.6rem 1.2rem;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    width: 100%;
+    transition: background-color 0.3s ease;
+}
+
+.project-btn:hover {
+    background-color: #1a3c5a;
+}

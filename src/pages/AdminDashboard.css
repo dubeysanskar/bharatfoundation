@@ -1,0 +1,228 @@
+.admin-dashboard {
+    display: flex;
+    min-height: 100vh;
+    color: #333;
+    /* Default text color for admin panel */
+    font-family: 'Inter', sans-serif;
+}
+
+.sidebar {
+    width: 260px;
+    background-color: var(--primary-blue);
+    color: white;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 4px 0 10px rgba(0, 0, 0, 0.1);
+    position: sticky;
+    top: 0;
+    height: 100vh;
+}
+
+.sidebar h2 {
+    margin-bottom: 2.5rem;
+    color: var(--accent-orange);
+    font-size: 1.5rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 1rem;
+}
+
+.sidebar nav {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    flex: 1;
+}
+
+.sidebar button {
+    background: none;
+    border: none;
+    color: #ccc;
+    text-align: left;
+    padding: 1rem;
+    cursor: pointer;
+    font-size: 1rem;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    font-weight: 500;
+}
+
+.sidebar button:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+    color: white;
+    transform: translateX(5px);
+}
+
+.sidebar button.active {
+    background-color: var(--accent-orange);
+    color: var(--primary-blue);
+    font-weight: 700;
+    box-shadow: 0 4px 12px rgba(252, 163, 17, 0.3);
+}
+
+.logout-btn {
+    margin-top: auto;
+    background-color: rgba(208, 0, 0, 0.1) !important;
+    color: #ff6b6b !important;
+    border: 1px solid #d00000 !important;
+}
+
+.logout-btn:hover {
+    background-color: #d00000 !important;
+    color: white !important;
+}
+
+.content {
+    flex: 1;
+    padding: 3rem;
+    background-color: #f4f6f8;
+    overflow-y: auto;
+}
+
+.admin-section {
+    background: white;
+    padding: 2.5rem;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    animation: fadeIn 0.5s ease-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.admin-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    border-bottom: 2px solid #f0f0f0;
+    padding-bottom: 1rem;
+}
+
+.admin-header h2 {
+    color: var(--primary-blue);
+    font-size: 1.8rem;
+    font-weight: 700;
+}
+
+.add-btn {
+    background-color: var(--primary-blue);
+    color: white;
+    border: none;
+    padding: 0.8rem 1.5rem;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background 0.3s;
+    box-shadow: 0 4px 10px rgba(15, 43, 68, 0.2);
+}
+
+.add-btn:hover {
+    background-color: #1a3c5a;
+    transform: translateY(-2px);
+}
+
+/* Form Styles */
+form {
+    background: #fff;
+    padding: 2rem;
+    border-radius: 12px;
+    border: 1px solid #eee;
+    margin-bottom: 2rem;
+}
+
+form h3 {
+    margin-bottom: 1.5rem;
+    color: var(--primary-blue);
+}
+
+.form-input {
+    width: 100%;
+    padding: 0.8rem 1rem;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: border-color 0.3s;
+    background-color: #f9f9f9;
+    color: #333;
+}
+
+.form-input:focus {
+    border-color: var(--primary-blue);
+    outline: none;
+    background-color: #fff;
+}
+
+/* Table Styles */
+.data-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    margin-top: 1rem;
+}
+
+.data-table th {
+    background-color: #f8f9fa;
+    color: #666;
+    font-weight: 600;
+    padding: 1rem;
+    text-align: left;
+    border-bottom: 2px solid #eee;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    letter-spacing: 0.5px;
+}
+
+.data-table td {
+    padding: 1rem;
+    border-bottom: 1px solid #eee;
+    color: #333;
+    vertical-align: middle;
+}
+
+.data-table tr:hover td {
+    background-color: #fcfcfc;
+}
+
+.action-btn {
+    padding: 0.5rem 1rem;
+    margin-right: 0.5rem;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    font-weight: 600;
+    transition: transform 0.2s;
+}
+
+.action-btn:hover {
+    transform: scale(1.05);
+}
+
+.edit-btn {
+    background-color: #fca311;
+    color: white;
+}
+
+.delete-btn {
+    background-color: #fff0f0;
+    color: #d00000;
+    border: 1px solid #ffd0d0;
+}
+
+.delete-btn:hover {
+    background-color: #d00000;
+    color: white;
+}
