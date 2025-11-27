@@ -425,7 +425,7 @@ app.delete('/api/moments/:id', (req, res) => {
 // --- SPA CATCH-ALL ROUTE ---
 // This must be the last route. It serves index.html for any unknown routes,
 // allowing React Router to handle the routing on the client side.
-app.get('*', (req, res) => {
+app.get(/(.*)/, (req, res) => {
     res.sendFile(path.join(__dirname, '../dist/index.html'));
 });
 
