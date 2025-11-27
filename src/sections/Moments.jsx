@@ -29,7 +29,7 @@ const Moments = () => {
                         className="moment-card"
                         style={{ backgroundColor: moment.color }}
                     >
-                        {moment.image && <img src={moment.image} alt={moment.title} style={{ width: '100%', height: '150px', objectFit: 'cover', borderRadius: '4px', marginBottom: '1rem' }} />}
+                        {moment.image && <img src={moment.image} alt={moment.title} loading="lazy" style={{ width: '100%', height: '150px', objectFit: 'cover', borderRadius: '4px', marginBottom: '1rem' }} />}
                         <h3>{moment.title}</h3>
                     </div>
                 ))}

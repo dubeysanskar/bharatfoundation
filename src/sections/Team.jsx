@@ -33,7 +33,7 @@ const Team = () => {
                         {founders.map((member, index) => (
                             <div key={index} className="team-card">
                                 <div className="member-avatar" style={{ borderColor: member.color }}>
-                                    <img src={member.image} alt={member.name} />
+                                    <img src={member.image} alt={member.name} loading="lazy" />
                                 </div>
                                 <h3 className="member-name">{member.name}</h3>
                                 <p className="member-role" style={{ color: member.color }}>{member.role}</p>
@@ -50,7 +50,7 @@ const Team = () => {
                         {members.map((member, index) => (
                             <div key={index} className="team-card small-card">
                                 <div className="member-avatar small-avatar">
-                                    <img src={member.image} alt={member.name} />
+                                    <img src={member.image} alt={member.name} loading="lazy" />
                                 </div>
                                 <h3 className="member-name small-name">{member.name}</h3>
                                 <p className="member-role small-role">{member.role}</p>
