@@ -26,7 +26,7 @@ const Home = () => (
       keywords="Bharat Foundation, Bharat Foundation Prayagraj, Bharat Foundation NGO Prayagraj, NGO in Prayagraj, Charity in Prayagraj, Best NGO for education in Prayagraj, Donate to charity in Prayagraj, Volunteer opportunities in Prayagraj NGO"
       name="Bharat Foundation"
       type="website"
-      canonical="https://bharatfoundation.in/"
+      canonical="https://www.bharatfoundationprayagraj.com/"
     />
     <script type="application/ld+json">
       {JSON.stringify({
@@ -35,7 +35,7 @@ const Home = () => (
           {
             "@type": "NGO",
             "name": "Bharat Foundation",
-            "url": "https://bharatfoundation.in/",
+            "url": "https://www.bharatfoundationprayagraj.com/",
             "address": {
               "@type": "PostalAddress",
               "streetAddress": "Bharat Foundation Office",
@@ -98,7 +98,7 @@ const DonationPage = () => (
       keywords="Donate to Bharat Foundation, Charity Donation Prayagraj, Support NGO Prayagraj"
       name="Bharat Foundation"
       type="website"
-      canonical="https://bharatfoundation.in/donate"
+      canonical="https://www.bharatfoundationprayagraj.com/donate"
     />
     <Donation />
   </div>
