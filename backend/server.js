@@ -1,4 +1,5 @@
 const express = require('express');
+require('dotenv').config();
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const nodemailer = require('nodemailer');
@@ -31,14 +32,11 @@ const upload = multer({ storage: storage });
 // Nodemailer Transporter
 // Nodemailer Transporter
 const transporter = nodemailer.createTransport({
-    host: 'smtp.gmail.com',
-    port: 465,
-    secure: true, // Use SSL
+    service: 'gmail',
     auth: {
         user: 'bharatfoundation4@gmail.com',
-        pass: process.env.EMAIL_PASS || 'mxke ntoz yjgb lqmm'
+        pass: process.env.EMAIL_PASS
     },
-    family: 4, // Force IPv4
     logger: true, // Log to console
     debug: true   // Include SMTP traffic in logs
 });
@@ -57,9 +55,9 @@ const sendEmail = async (to, subject, text) => {
     try {
         console.log(`[EMAIL ATTEMPT] To: ${to}, Subject: ${subject}`);
 
-        // 15 second timeout
+        // 60 second timeout (increased)
         const timeout = new Promise((_, reject) =>
-            setTimeout(() => reject(new Error('Email sending timed out')), 15000)
+            setTimeout(() => reject(new Error('Email sending timed out')), 60000)
         );
 
         const mailOptions = {

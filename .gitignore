@@ -26,3 +26,4 @@ dist-ssr
 # Backend
 backend/foundation.db
 backend/node_modules
+backend/.env
