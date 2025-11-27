@@ -59,7 +59,7 @@ const sendEmail = async (to, subject, text) => {
 app.post('/api/admin/login', (req, res) => {
     const { password } = req.body;
     // Simple hardcoded password for now
-    if (password === 'admin123') {
+    if (password === 'dhananjay@bharat') {
         res.json({ success: true, token: 'admin-token-secret' });
     } else {
         res.status(401).json({ success: false, message: 'Invalid password' });

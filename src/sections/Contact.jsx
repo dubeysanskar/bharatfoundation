@@ -61,7 +61,15 @@ const Contact = () => {
                             <span className="icon">📍</span>
                             <div className="details">
                                 <h4>Visit Us</h4>
-                                <p>Prayagraj, Uttar Pradesh, India</p>
+                                <p>173k/10, Purvanchal chauraha, 60 feet road, Rajrooppur, 211011</p>
+                            </div>
+                        </div>
+
+                        <div className="info-item">
+                            <span className="icon">📞</span>
+                            <div className="details">
+                                <h4>Call Us</h4>
+                                <p>+91 9911031689</p>
                             </div>
                         </div>
                     </div>
