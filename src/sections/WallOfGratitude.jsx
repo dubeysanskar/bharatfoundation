@@ -52,6 +52,24 @@ const WallOfGratitude = () => {
                     </div>
                 )}
             </div>
+
+            <div className="first-donors-section">
+                <h3 className="first-donors-title">Our First Donors</h3>
+                <div className="first-donors-grid">
+                    <div className="first-donor-card">
+                        <div className="donor-img-wrapper">
+                            <img src="/assets/donors/Manasvi Mishra.png" alt="Manasvi Mishra" className="donor-img" />
+                        </div>
+                        <p className="donor-name">Manasvi Mishra</p>
+                    </div>
+                    <div className="first-donor-card">
+                        <div className="donor-img-wrapper">
+                            <img src="/assets/donors/Paritosh.png" alt="Paritosh" className="donor-img" />
+                        </div>
+                        <p className="donor-name">Paritosh</p>
+                    </div>
+                </div>
+            </div>
         </section>
     );
 };

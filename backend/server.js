@@ -126,12 +126,12 @@ app.post('/api/donate', (req, res) => {
         const donorId = this.lastID;
         const verificationLink = `https://bharat-foundation.onrender.com/verify/${donorId}`; // Updated to Prod URL
 
-        const donorEmailBody = `Thank you for your donation of ₹${amount}!\n\nPlease click the link below to verify your donation and appear on our Wall of Gratitude:\n${verificationLink}`;
+        const donorEmailBody = `Thank you for your donation of ₹${amount}!\n\nYour support helps us make a real difference. We have received your donation request and it is currently under verification.`;
         const adminEmailBody = `New Donation Initiated\n\nDonor Name: ${name}\nAmount: ₹${amount}\nDonor Email: ${email}\nType: ${type}\n\nVerification Link: ${verificationLink}`;
 
         // Try to send emails, but don't fail the donation if email fails (just log it)
-        const donorEmailResult = await sendEmail(email, 'Verify your Donation - Bharat Foundation', donorEmailBody);
-        await sendEmail('bharatfoundation4@gmail.com', 'New Donation Alert', adminEmailBody);
+        const donorEmailResult = await sendEmail(email, 'Thank You for Your Donation - Bharat Foundation', donorEmailBody);
+        await sendEmail('bharatfoundation4@gmail.com', 'New Donation Alert (Verification Required)', adminEmailBody);
 
         if (donorEmailResult.success) {
             res.json({ success: true, message: 'Donation initiated. Check your email.', id: donorId });

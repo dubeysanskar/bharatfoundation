@@ -34,6 +34,8 @@
     background-color: rgba(255, 255, 255, 0.05);
     overflow: hidden;
     position: relative;
+    margin-bottom: 4rem;
+    /* Added margin for spacing */
 }
 
 .donor-list-placeholder {
@@ -68,4 +70,59 @@
     100% {
         transform: translateX(-50%);
     }
+}
+
+/* First Donors Section */
+.first-donors-section {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.first-donors-title {
+    font-size: 2rem;
+    color: var(--accent-orange);
+    margin-bottom: 2rem;
+    font-weight: 700;
+}
+
+.first-donors-grid {
+    display: flex;
+    justify-content: center;
+    gap: 3rem;
+    flex-wrap: wrap;
+}
+
+.first-donor-card {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 1.5rem;
+    border-radius: 12px;
+    width: 250px;
+    transition: transform 0.3s ease;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.first-donor-card:hover {
+    transform: translateY(-5px);
+    background: rgba(255, 255, 255, 0.15);
+}
+
+.donor-img-wrapper {
+    width: 150px;
+    height: 150px;
+    margin: 0 auto 1rem;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 3px solid var(--accent-orange);
+}
+
+.donor-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.donor-name {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: white;
 }
