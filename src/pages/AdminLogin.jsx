@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './AdminLogin.css';
 
@@ -10,7 +10,7 @@ const AdminLogin = () => {
     const handleLogin = async (e) => {
         e.preventDefault();
         try {
-            const response = await fetch(`/api/verify`, {
+            const response = await fetch(`/api/admin/login`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ password })
@@ -26,6 +26,12 @@ const AdminLogin = () => {
             setError('Login failed');
         }
     };
+
+    useEffect(() => {
+        if (localStorage.getItem('adminToken')) {
+            navigate('/admin/dashboard');
+        }
+    }, [navigate]);
 
     return (
         <div className="admin-login-container">
