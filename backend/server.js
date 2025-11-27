@@ -13,6 +13,13 @@ const PORT = process.env.PORT || 5000;
 
 app.use(cors());
 app.use(bodyParser.json());
+
+// Disable caching for all API routes to ensure fresh data
+app.use((req, res, next) => {
+    res.set('Cache-Control', 'no-store, no-cache, must-revalidate, private');
+    next();
+});
+
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // Serve Static Files (Frontend Build)
@@ -413,6 +420,13 @@ app.delete('/api/moments/:id', (req, res) => {
         }
         res.json({ success: true });
     });
+});
+
+// --- SPA CATCH-ALL ROUTE ---
+// This must be the last route. It serves index.html for any unknown routes,
+// allowing React Router to handle the routing on the client side.
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, '../dist/index.html'));
 });
 
 app.listen(PORT, () => {

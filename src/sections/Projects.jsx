@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
 import './Projects.css';
 
 const Projects = () => {
     const { t } = useLanguage();
+    const navigate = useNavigate();
     const [projects, setProjects] = useState([]);
 
     useEffect(() => {
@@ -30,7 +32,7 @@ const Projects = () => {
                         <div className="project-content">
                             <h3 className="project-name">{project.title}</h3>
                             <p className="project-desc">{project.description}</p>
-                            <button className="project-btn" onClick={() => window.location.href = '/donate'}>Donate to the Cause</button>
+                            <button className="project-btn" onClick={() => navigate('/donate')}>Donate to the Cause</button>
                         </div>
                     </div>
                 ))}
