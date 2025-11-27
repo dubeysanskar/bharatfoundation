@@ -12,7 +12,7 @@ const ManageMembers = () => {
     }, []);
 
     const fetchMembers = async () => {
-        const response = await fetch('http://localhost:5000/api/members');
+        const response = await fetch('/api/members');
         const data = await response.json();
         setMembers(data.data);
     };
@@ -25,7 +25,7 @@ const ManageMembers = () => {
         if (imageFile) {
             const uploadData = new FormData();
             uploadData.append('image', imageFile);
-            const uploadRes = await fetch('http://localhost:5000/api/upload', {
+            const uploadRes = await fetch('/api/upload', {
                 method: 'POST',
                 body: uploadData
             });
@@ -37,8 +37,8 @@ const ManageMembers = () => {
 
         const payload = { ...formData, image: imageUrl };
         const url = isEditing
-            ? `http://localhost:5000/api/members/${editId}`
-            : 'http://localhost:5000/api/members';
+            ? `/api/members/${editId}`
+            : '/api/members';
         const method = isEditing ? 'PUT' : 'POST';
 
         await fetch(url, {
@@ -62,7 +62,7 @@ const ManageMembers = () => {
 
     const handleDelete = async (id) => {
         if (window.confirm('Delete this member?')) {
-            await fetch(`http://localhost:5000/api/members/${id}`, { method: 'DELETE' });
+            await fetch(`/api/members/${id}`, { method: 'DELETE' });
             fetchMembers();
         }
     };

@@ -8,14 +8,14 @@ const ManageDonations = () => {
     }, []);
 
     const fetchDonations = async () => {
-        const response = await fetch('http://localhost:5000/api/admin/donors');
+        const response = await fetch('/api/admin/donors');
         const data = await response.json();
         setDonations(data.data);
     };
 
     const verifyDonation = async (id, currentStatus) => {
         const newStatus = currentStatus ? 0 : 1;
-        await fetch(`http://localhost:5000/api/admin/donors/${id}`, {
+        await fetch(`/api/admin/donors/${id}`, {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ verified: newStatus })
@@ -25,7 +25,7 @@ const ManageDonations = () => {
 
     const deleteDonation = async (id) => {
         if (window.confirm('Are you sure you want to delete this donation?')) {
-            await fetch(`http://localhost:5000/api/admin/donors/${id}`, {
+            await fetch(`/api/admin/donors/${id}`, {
                 method: 'DELETE'
             });
             fetchDonations();

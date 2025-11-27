@@ -16,7 +16,7 @@ const Donation = () => {
         setStatus('Processing...');
 
         try {
-            const response = await fetch('http://localhost:5000/api/donate', {
+            const response = await fetch('/api/donate', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ ...formData, type: 'General' })

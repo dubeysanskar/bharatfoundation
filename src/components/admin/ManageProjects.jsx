@@ -12,7 +12,7 @@ const ManageProjects = () => {
     }, []);
 
     const fetchProjects = async () => {
-        const response = await fetch('http://localhost:5000/api/projects');
+        const response = await fetch('/api/projects');
         const data = await response.json();
         setProjects(data.data);
     };
@@ -25,7 +25,7 @@ const ManageProjects = () => {
         if (imageFile) {
             const uploadData = new FormData();
             uploadData.append('image', imageFile);
-            const uploadRes = await fetch('http://localhost:5000/api/upload', {
+            const uploadRes = await fetch('/api/upload', {
                 method: 'POST',
                 body: uploadData
             });
@@ -37,8 +37,8 @@ const ManageProjects = () => {
 
         const payload = { ...formData, image: imageUrl };
         const url = isEditing
-            ? `http://localhost:5000/api/projects/${editId}`
-            : 'http://localhost:5000/api/projects';
+            ? `/api/projects/${editId}`
+            : '/api/projects';
         const method = isEditing ? 'PUT' : 'POST';
 
         await fetch(url, {
@@ -62,7 +62,7 @@ const ManageProjects = () => {
 
     const handleDelete = async (id) => {
         if (window.confirm('Delete this project?')) {
-            await fetch(`http://localhost:5000/api/projects/${id}`, { method: 'DELETE' });
+            await fetch(`/api/projects/${id}`, { method: 'DELETE' });
             fetchProjects();
         }
     };

@@ -9,7 +9,7 @@ const Moments = () => {
     useEffect(() => {
         const fetchMoments = async () => {
             try {
-                const response = await fetch('http://localhost:5000/api/moments');
+                const response = await fetch('/api/moments');
                 const data = await response.json();
                 setMoments(data.data);
             } catch (error) {

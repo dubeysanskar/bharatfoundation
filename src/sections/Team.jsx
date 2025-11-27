@@ -10,7 +10,7 @@ const Team = () => {
     useEffect(() => {
         const fetchTeam = async () => {
             try {
-                const response = await fetch('http://localhost:5000/api/members');
+                const response = await fetch('/api/members');
                 const data = await response.json();
                 const allMembers = data.data;
                 setFounders(allMembers.filter(m => m.type === 'founder'));

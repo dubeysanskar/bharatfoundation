@@ -12,7 +12,7 @@ const ManageMoments = () => {
     }, []);
 
     const fetchMoments = async () => {
-        const response = await fetch('http://localhost:5000/api/moments');
+        const response = await fetch('/api/moments');
         const data = await response.json();
         setMoments(data.data);
     };
@@ -25,7 +25,7 @@ const ManageMoments = () => {
         if (imageFile) {
             const uploadData = new FormData();
             uploadData.append('image', imageFile);
-            const uploadRes = await fetch('http://localhost:5000/api/upload', {
+            const uploadRes = await fetch('/api/upload', {
                 method: 'POST',
                 body: uploadData
             });
@@ -37,8 +37,8 @@ const ManageMoments = () => {
 
         const payload = { ...formData, image: imageUrl };
         const url = isEditing
-            ? `http://localhost:5000/api/moments/${editId}`
-            : 'http://localhost:5000/api/moments';
+            ? `/api/moments/${editId}`
+            : '/api/moments';
         const method = isEditing ? 'PUT' : 'POST';
 
         await fetch(url, {
@@ -62,7 +62,7 @@ const ManageMoments = () => {
 
     const handleDelete = async (id) => {
         if (window.confirm('Delete this moment?')) {
-            await fetch(`http://localhost:5000/api/moments/${id}`, { method: 'DELETE' });
+            await fetch(`/api/moments/${id}`, { method: 'DELETE' });
             fetchMoments();
         }
     };
