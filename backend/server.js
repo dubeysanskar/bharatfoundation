@@ -7,7 +7,7 @@ const cors = require('cors');
 const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
-const db = require('./database');
+const { connect, getDb } = require('./database');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -23,8 +23,13 @@ app.use((req, res, next) => {
 
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
-// Serve Static Files (Frontend Build)
+// Serve Static Files (Frontend Build) - Prioritize this!
 app.use(express.static(path.join(__dirname, '../dist')));
+
+// Fast Health Check Route
+app.get('/health', (req, res) => {
+    res.status(200).send('OK');
+});
 
 // Multer Setup for Image Uploads
 const storage = multer.diskStorage({
@@ -40,7 +45,6 @@ const upload = multer({ storage: storage });
 // Nodemailer Transporter
 const { Resend } = require('resend');
 
-// Initialize Resend
 // Initialize Resend
 let resend;
 if (process.env.RESEND_API_KEY) {
@@ -81,6 +85,15 @@ const sendEmail = async (to, subject, textContent) => {
         return { success: false, error };
     }
 };
+
+// Database Readiness Middleware
+let isDbReady = false;
+app.use('/api', (req, res, next) => {
+    if (!isDbReady) {
+        return res.status(503).json({ error: 'Service Unavailable. Database is initializing.' });
+    }
+    next();
+});
 
 // --- AUTH API ---
 app.post('/api/admin/login', (req, res) => {
@@ -127,7 +140,7 @@ app.post('/api/donate', (req, res) => {
     const sql = 'INSERT INTO donors (name, amount, type, email, verified) VALUES (?, ?, ?, ?, 0)';
     const params = [name, amount, type, email];
 
-    db.run(sql, params, async function (err) {
+    getDb().run(sql, params, async function (err) {
         if (err) {
             res.status(400).json({ error: err.message });
             return;
@@ -158,7 +171,7 @@ app.post('/api/donate', (req, res) => {
 app.post('/api/verify', (req, res) => {
     const { id } = req.body;
     const sql = 'UPDATE donors SET verified = 1 WHERE id = ?';
-    db.run(sql, id, function (err) {
+    getDb().run(sql, id, function (err) {
         if (err) {
             res.status(400).json({ error: err.message });
             return;
@@ -169,10 +182,15 @@ app.post('/api/verify', (req, res) => {
 
 // --- EMAIL VERIFICATION ROUTE (GET) ---
 app.get('/verify/:id', (req, res) => {
+    // Check DB readiness for this non-API route too, or handle gracefully
+    if (!isDbReady) {
+        return res.status(503).send('Service Unavailable. Please try again in a few seconds.');
+    }
+
     const id = req.params.id;
     const sql = 'UPDATE donors SET verified = 1 WHERE id = ?';
 
-    db.run(sql, id, function (err) {
+    getDb().run(sql, id, function (err) {
         if (err) {
             console.error('Verification Error:', err);
             return res.status(500).send(`
@@ -225,7 +243,7 @@ app.get('/verify/:id', (req, res) => {
 
 app.get('/api/donors', (req, res) => {
     const sql = 'SELECT * FROM donors WHERE verified = 1 ORDER BY id DESC';
-    db.all(sql, [], (err, rows) => {
+    getDb().all(sql, [], (err, rows) => {
         if (err) {
             res.status(400).json({ error: err.message });
             return;
@@ -236,7 +254,7 @@ app.get('/api/donors', (req, res) => {
 
 app.get('/api/admin/donors', (req, res) => {
     const sql = 'SELECT * FROM donors ORDER BY id DESC';
-    db.all(sql, [], (err, rows) => {
+    getDb().all(sql, [], (err, rows) => {
         if (err) {
             res.status(400).json({ error: err.message });
             return;
@@ -249,7 +267,7 @@ app.put('/api/admin/donors/:id', (req, res) => {
     const { name, amount, type, verified } = req.body;
 
     // First fetch the existing record to ensure we don't overwrite with nulls if partial data is sent
-    db.get('SELECT * FROM donors WHERE id = ?', [req.params.id], (err, row) => {
+    getDb().get('SELECT * FROM donors WHERE id = ?', [req.params.id], (err, row) => {
         if (err || !row) {
             res.status(404).json({ error: 'Donor not found' });
             return;
@@ -262,7 +280,7 @@ app.put('/api/admin/donors/:id', (req, res) => {
         const newVerified = verified !== undefined ? verified : row.verified;
 
         const sql = 'UPDATE donors SET name = ?, amount = ?, type = ?, verified = ? WHERE id = ?';
-        db.run(sql, [newName, newAmount, newType, newVerified, req.params.id], function (err) {
+        getDb().run(sql, [newName, newAmount, newType, newVerified, req.params.id], function (err) {
             if (err) {
                 res.status(400).json({ error: err.message });
                 return;
@@ -274,7 +292,7 @@ app.put('/api/admin/donors/:id', (req, res) => {
 
 app.delete('/api/admin/donors/:id', (req, res) => {
     const sql = 'DELETE FROM donors WHERE id = ?';
-    db.run(sql, req.params.id, function (err) {
+    getDb().run(sql, req.params.id, function (err) {
         if (err) {
             res.status(400).json({ error: err.message });
             return;
@@ -286,7 +304,7 @@ app.delete('/api/admin/donors/:id', (req, res) => {
 // --- MEMBERS APIs ---
 app.get('/api/members', (req, res) => {
     const sql = 'SELECT * FROM members';
-    db.all(sql, [], (err, rows) => {
+    getDb().all(sql, [], (err, rows) => {
         if (err) {
             res.status(400).json({ error: err.message });
             return;
@@ -298,7 +316,7 @@ app.get('/api/members', (req, res) => {
 app.post('/api/members', (req, res) => {
     const { name, role, image, type, description, color } = req.body;
     const sql = 'INSERT INTO members (name, role, image, type, description, color) VALUES (?, ?, ?, ?, ?, ?)';
-    db.run(sql, [name, role, image, type, description, color], function (err) {
+    getDb().run(sql, [name, role, image, type, description, color], function (err) {
         if (err) {
             res.status(400).json({ error: err.message });
             return;
@@ -310,7 +328,7 @@ app.post('/api/members', (req, res) => {
 app.put('/api/members/:id', (req, res) => {
     const { name, role, image, type, description, color } = req.body;
     const sql = 'UPDATE members SET name = ?, role = ?, image = ?, type = ?, description = ?, color = ? WHERE id = ?';
-    db.run(sql, [name, role, image, type, description, color, req.params.id], function (err) {
+    getDb().run(sql, [name, role, image, type, description, color, req.params.id], function (err) {
         if (err) {
             res.status(400).json({ error: err.message });
             return;
@@ -321,7 +339,7 @@ app.put('/api/members/:id', (req, res) => {
 
 app.delete('/api/members/:id', (req, res) => {
     const sql = 'DELETE FROM members WHERE id = ?';
-    db.run(sql, req.params.id, function (err) {
+    getDb().run(sql, req.params.id, function (err) {
         if (err) {
             res.status(400).json({ error: err.message });
             return;
@@ -333,7 +351,7 @@ app.delete('/api/members/:id', (req, res) => {
 // --- PROJECTS APIs ---
 app.get('/api/projects', (req, res) => {
     const sql = 'SELECT * FROM projects';
-    db.all(sql, [], (err, rows) => {
+    getDb().all(sql, [], (err, rows) => {
         if (err) {
             res.status(400).json({ error: err.message });
             return;
@@ -344,7 +362,7 @@ app.get('/api/projects', (req, res) => {
 
 app.get('/api/projects/:id', (req, res) => {
     const sql = 'SELECT * FROM projects WHERE id = ?';
-    db.get(sql, [req.params.id], (err, row) => {
+    getDb().get(sql, [req.params.id], (err, row) => {
         if (err) {
             res.status(400).json({ error: err.message });
             return;
@@ -360,7 +378,7 @@ app.get('/api/projects/:id', (req, res) => {
 app.post('/api/projects', (req, res) => {
     const { title, description, image } = req.body;
     const sql = 'INSERT INTO projects (title, description, image) VALUES (?, ?, ?)';
-    db.run(sql, [title, description, image], function (err) {
+    getDb().run(sql, [title, description, image], function (err) {
         if (err) {
             res.status(400).json({ error: err.message });
             return;
@@ -372,7 +390,7 @@ app.post('/api/projects', (req, res) => {
 app.put('/api/projects/:id', (req, res) => {
     const { title, description, image } = req.body;
     const sql = 'UPDATE projects SET title = ?, description = ?, image = ? WHERE id = ?';
-    db.run(sql, [title, description, image, req.params.id], function (err) {
+    getDb().run(sql, [title, description, image, req.params.id], function (err) {
         if (err) {
             res.status(400).json({ error: err.message });
             return;
@@ -383,7 +401,7 @@ app.put('/api/projects/:id', (req, res) => {
 
 app.delete('/api/projects/:id', (req, res) => {
     const sql = 'DELETE FROM projects WHERE id = ?';
-    db.run(sql, req.params.id, function (err) {
+    getDb().run(sql, req.params.id, function (err) {
         if (err) {
             res.status(400).json({ error: err.message });
             return;
@@ -395,7 +413,7 @@ app.delete('/api/projects/:id', (req, res) => {
 // --- MOMENTS APIs ---
 app.get('/api/moments', (req, res) => {
     const sql = 'SELECT * FROM moments';
-    db.all(sql, [], (err, rows) => {
+    getDb().all(sql, [], (err, rows) => {
         if (err) {
             res.status(400).json({ error: err.message });
             return;
@@ -407,7 +425,7 @@ app.get('/api/moments', (req, res) => {
 app.post('/api/moments', (req, res) => {
     const { title, image, color } = req.body;
     const sql = 'INSERT INTO moments (title, image, color) VALUES (?, ?, ?)';
-    db.run(sql, [title, image, color], function (err) {
+    getDb().run(sql, [title, image, color], function (err) {
         if (err) {
             res.status(400).json({ error: err.message });
             return;
@@ -419,7 +437,7 @@ app.post('/api/moments', (req, res) => {
 app.put('/api/moments/:id', (req, res) => {
     const { title, image, color } = req.body;
     const sql = 'UPDATE moments SET title = ?, image = ?, color = ? WHERE id = ?';
-    db.run(sql, [title, image, color, req.params.id], function (err) {
+    getDb().run(sql, [title, image, color, req.params.id], function (err) {
         if (err) {
             res.status(400).json({ error: err.message });
             return;
@@ -430,7 +448,7 @@ app.put('/api/moments/:id', (req, res) => {
 
 app.delete('/api/moments/:id', (req, res) => {
     const sql = 'DELETE FROM moments WHERE id = ?';
-    db.run(sql, req.params.id, function (err) {
+    getDb().run(sql, req.params.id, function (err) {
         if (err) {
             res.status(400).json({ error: err.message });
             return;
@@ -439,23 +457,6 @@ app.delete('/api/moments/:id', (req, res) => {
     });
 });
 
-// --- SELF-PING MECHANISM (Keep Alive) ---
-app.get('/ping', (req, res) => {
-    res.status(200).send('pong');
-});
-
-// Ping the server every 14 minutes (840,000 ms) to prevent sleep
-const PING_INTERVAL = 14 * 60 * 1000;
-const SERVER_URL = 'https://bharatfoundationprayagraj.com/ping';
-
-setInterval(() => {
-    https.get(SERVER_URL, (res) => {
-        console.log(`[KEEP-ALIVE] Ping sent to ${SERVER_URL}. Status: ${res.statusCode}`);
-    }).on('error', (e) => {
-        console.error(`[KEEP-ALIVE] Ping failed: ${e.message}`);
-    });
-}, PING_INTERVAL);
-
 // --- SPA CATCH-ALL ROUTE ---
 // This must be the last route. It serves index.html for any unknown routes,
 // allowing React Router to handle the routing on the client side.
@@ -463,6 +464,50 @@ app.get(/(.*)/, (req, res) => {
     res.sendFile(path.join(__dirname, '../dist/index.html'));
 });
 
+// Start Server IMMEDIATELY
 app.listen(PORT, () => {
-    console.log(`Server running on http://localhost:${PORT}`);
+    console.log(`🚀 Server ready at http://localhost:${PORT}`);
+
+    // Defer Heavy Initialization
+    initializeBackend();
 });
+
+// --- BACKGROUND INITIALIZATION ---
+async function initializeBackend() {
+    console.log('[INIT] Starting background initialization...');
+
+    // 1. Connect to Database
+    try {
+        await connect();
+        isDbReady = true;
+        console.log('[INIT] Database connected and ready.');
+    } catch (err) {
+        console.error('[INIT] Database connection failed:', err);
+        // Retry logic could go here
+    }
+
+    // 2. Start Self-Ping (Keep-Alive)
+    startKeepAlive();
+}
+
+function startKeepAlive() {
+    // --- SELF-PING MECHANISM (Keep Alive) ---
+    app.get('/ping', (req, res) => {
+        res.status(200).send('pong');
+    });
+
+    // Ping the server every 14 minutes (840,000 ms) to prevent sleep
+    const PING_INTERVAL = 14 * 60 * 1000;
+    const SERVER_URL = 'https://bharatfoundationprayagraj.com/ping';
+
+    setInterval(() => {
+        https.get(SERVER_URL, (res) => {
+            console.log(`[KEEP-ALIVE] Ping sent to ${SERVER_URL}. Status: ${res.statusCode}`);
+        }).on('error', (e) => {
+            console.error(`[KEEP-ALIVE] Ping failed: ${e.message}`);
+        });
+    }, PING_INTERVAL);
+
+    console.log('[INIT] Keep-Alive mechanism started.');
+}
+
