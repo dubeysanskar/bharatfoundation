@@ -1,17 +1,29 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import './Footer.css';
 
 const Footer = () => {
     return (
         <footer className="footer">
-            <h3 className="footer-title">Bharat Foundation</h3>
-            <p className="footer-copyright">
-                &copy; 2025 All Rights Reserved. Serving with Diligence and Integrity.
-            </p>
-            <div className="footer-socials">
-                <span>f</span>
-                <span>t</span>
-                <span>i</span>
+            <div className="container">
+                <div className="footer-content">
+                    <div className="footer-brand">
+                        <h3 className="footer-title">
+                            <span className="brand-accent">Bharat</span> Foundation
+                        </h3>
+                        <p className="footer-tagline">
+                            Serving with Diligence and Integrity
+                        </p>
+                    </div>
+                    <div className="footer-links">
+                        <Link to="/admin/login" className="footer-link">Admin</Link>
+                    </div>
+                </div>
+                <div className="footer-bottom">
+                    <p className="copyright">
+                        © 2025 Bharat Foundation. All Rights Reserved.
+                    </p>
+                </div>
             </div>
         </footer>
     );

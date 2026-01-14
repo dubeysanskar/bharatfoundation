@@ -1,33 +1,103 @@
 .history {
-    padding: 4rem 2rem;
-    background-color: white;
-    color: var(--primary-blue);
-    text-align: center;
+    background: var(--color-bg);
+    padding: var(--space-xxl) 0;
 }
 
-.section-title {
+.history-grid {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr;
+    gap: var(--space-xl);
+    align-items: start;
+}
+
+.history-title {
     font-size: 2.5rem;
-    font-weight: 800;
-    margin-bottom: 2rem;
-    position: relative;
-    display: inline-block;
-    color: var(--primary-blue);
+    margin-bottom: var(--space-md);
+    color: var(--color-primary);
 }
 
-.section-title::after {
-    content: '';
+.history-text p {
+    font-size: 1.0625rem;
+    line-height: 1.9;
+    color: var(--color-text-light);
+    margin-bottom: var(--space-md);
+}
+
+.history-text p:last-child {
+    margin-bottom: 0;
+}
+
+/* Stats */
+.history-stats {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+}
+
+.stat-card {
+    background: var(--color-bg-alt);
+    padding: var(--space-lg);
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-md);
+    text-align: center;
+    border: 1px solid var(--color-border);
+    transition: all var(--transition-normal);
+}
+
+.stat-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-lg);
+}
+
+.stat-number {
     display: block;
-    width: 60%;
-    height: 4px;
-    background-color: var(--accent-orange);
-    margin: 0.5rem auto 0;
-    border-radius: 2px;
+    font-family: var(--font-heading);
+    font-size: 3rem;
+    font-weight: 700;
+    color: var(--color-accent);
+    margin-bottom: var(--space-xs);
 }
 
-.history-content {
-    max-width: 800px;
-    margin: 0 auto;
-    font-size: 1.1rem;
-    color: #555;
-    line-height: 1.8;
+.stat-label {
+    font-size: 0.9375rem;
+    color: var(--color-text-light);
+    font-weight: 500;
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+    .history-grid {
+        grid-template-columns: 1fr;
+        gap: var(--space-lg);
+    }
+
+    .history-stats {
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+
+    .stat-card {
+        flex: 1;
+        min-width: 140px;
+    }
+}
+
+@media (max-width: 768px) {
+    .history-title {
+        font-size: 2rem;
+    }
+
+    .stat-number {
+        font-size: 2.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .history-stats {
+        flex-direction: column;
+    }
+
+    .stat-card {
+        width: 100%;
+    }
 }

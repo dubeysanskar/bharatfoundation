@@ -61,14 +61,7 @@ const initializeTables = () => {
         const members = [
           { name: "Rekha Pandey", role: "Adyaksh", image: "/uploads/founder4.jpeg", type: "founder", color: "#d00000" },
           { name: "Dhananjay Pandey", role: "Secretary", image: "/uploads/founder2.jpeg", type: "founder", color: "#0f2b44" },
-          { name: "Chandra Mohan Saxena", role: "Founder Member", image: "/uploads/founder1.jpeg", type: "founder", color: "#fca311" },
-          { name: "Rajesh Singh", role: "Founder Member", image: "/uploads/founder3.jpeg", type: "founder", color: "#fca311" },
-          { name: "Ankit Mishra", role: "Member", image: "/uploads/member1.jpeg", type: "member" },
-          { name: "Nitu Verma", role: "Member", image: "/uploads/member2.jpeg", type: "member" },
-          { name: "Sunil Mishra", role: "Member", image: "/uploads/member6.jpeg", type: "member" },
-          { name: "Member Name", role: "Member", image: "/uploads/member3.jpeg", type: "member" },
-          { name: "Member Name", role: "Member", image: "/uploads/member4.jpeg", type: "member" },
-          { name: "Member Name", role: "Member", image: "/uploads/member5.jpeg", type: "member" }
+          { name: "Chandra Mohan Saxena", role: "Founder Member", image: "/uploads/founder1.jpeg", type: "founder", color: "#fca311" }
         ];
         const stmt = db.prepare("INSERT INTO members (name, role, image, type, color) VALUES (?, ?, ?, ?, ?)");
         members.forEach(m => stmt.run(m.name, m.role, m.image, m.type, m.color));
@@ -82,6 +75,7 @@ const initializeTables = () => {
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       title TEXT NOT NULL,
       description TEXT,
+      long_description TEXT,
       image TEXT
     )`, () => {
     // Seed Projects if empty
@@ -90,7 +84,7 @@ const initializeTables = () => {
         console.log("Seeding Projects...");
         const projects = [
           { title: "Gaushala Seva", description: "Providing shelter and care for cows.", image: "/uploads/gaushala.jpg" },
-          { title: "Shiv Mandir Construction", description: "Building a spiritual center for the community.", image: "/uploads/shivmandir.avif" }
+          { title: "Shiv Mandir Construction", description: "Building a spiritual center for the community.", image: "/uploads/shivmandir_construction.png" }
         ];
         const stmt = db.prepare("INSERT INTO projects (title, description, image) VALUES (?, ?, ?)");
         projects.forEach(p => stmt.run(p.title, p.description, p.image));

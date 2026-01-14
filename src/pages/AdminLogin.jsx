@@ -48,6 +48,9 @@ const AdminLogin = () => {
                     <button type="submit" className="login-btn">Login</button>
                 </form>
                 {error && <p className="error-msg">{error}</p>}
+                <button className="back-home-btn" onClick={() => navigate('/')}>
+                    ← Back to Home
+                </button>
             </div>
         </div>
     );

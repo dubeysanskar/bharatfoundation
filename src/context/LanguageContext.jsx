@@ -22,7 +22,7 @@ export const translations = {
         },
         history: {
             title: "Our History",
-            content: "The Bharat Foundation was established two decades ago with a simple yet profound vision: to uplift local communities and preserve India's timeless cultural heritage. Starting from a small community kitchen, we have grown into a multi-faceted organization touching thousands of lives."
+            content: "The Bharat Foundation was established two decades ago with a simple yet profound vision: to uplift local communities and preserve India's timeless cultural heritage. Starting from a small community kitchen, we have grown into a multi-faceted organization touching thousands of lives.\n\nOur journey began in the heart of Prayagraj, where a group of dedicated volunteers came together with a shared dream of creating meaningful change. What started as distributing food to the needy has evolved into a comprehensive mission encompassing spiritual development, animal welfare, and community empowerment.\n\nOver the years, we have built strong partnerships with local communities, religious institutions, and like-minded organizations. Our Gaushala provides sanctuary to over 50 rescued cattle, while our Shiv Mandir project is creating a spiritual center that will serve generations to come.\n\nToday, the Bharat Foundation stands as a testament to the power of collective action and the enduring spirit of seva (selfless service). We continue to expand our reach, guided by the principles of compassion, integrity, and dedication to the greater good."
         },
         wall: {
             title: "The Wall of Gratitude",
@@ -94,7 +94,7 @@ export const translations = {
         },
         history: {
             title: "हमारा इतिहास",
-            content: "भारत फाउंडेशन की स्थापना दो दशक पहले एक सरल लेकिन गहन दृष्टि के साथ की गई थी: स्थानीय समुदायों का उत्थान करना और भारत की कालातीत सांस्कृतिक विरासत को संरक्षित करना। एक छोटी सामुदायिक रसोई से शुरू होकर, हम हजारों लोगों के जीवन को छूने वाले एक बहुआयामी संगठन बन गए हैं।"
+            content: "भारत फाउंडेशन की स्थापना दो दशक पहले एक सरल लेकिन गहन दृष्टि के साथ की गई थी: स्थानीय समुदायों का उत्थान करना और भारत की कालातीत सांस्कृतिक विरासत को संरक्षित करना। एक छोटी सामुदायिक रसोई से शुरू होकर, हम हजारों लोगों के जीवन को छूने वाले एक बहुआयामी संगठन बन गए हैं।\n\nहमारी यात्रा प्रयागराज के केंद्र में शुरू हुई, जहाँ समर्पित स्वयंसेवकों का एक समूह सार्थक परिवर्तन लाने के साझा सपने के साथ एक साथ आया। जो जरूरतमंदों को भोजन वितरित करने से शुरू हुआ, वह आध्यात्मिक विकास, पशु कल्याण और सामुदायिक सशक्तिकरण को शामिल करते हुए एक व्यापक मिशन में विकसित हो गया है।\n\nवर्षों में, हमने स्थानीय समुदायों, धार्मिक संस्थानों और समान विचारधारा वाले संगठनों के साथ मजबूत साझेदारी बनाई है। हमारी गौशाला 50 से अधिक बचाए गए मवेशियों को आश्रय प्रदान करती है, जबकि हमारी शिव मंदिर परियोजना एक आध्यात्मिक केंद्र बना रही है जो आने वाली पीढ़ियों की सेवा करेगा।\n\nआज, भारत फाउंडेशन सामूहिक कार्रवाई की शक्ति और सेवा की स्थायी भावना का प्रमाण है। हम करुणा, अखंडता और अधिक अच्छे के प्रति समर्पण के सिद्धांतों द्वारा निर्देशित होकर अपनी पहुंच का विस्तार करना जारी रखते हैं।"
         },
         wall: {
             title: "आभार की दीवार",

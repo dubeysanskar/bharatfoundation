@@ -1,88 +1,90 @@
 .projects {
-    padding: 4rem 2rem;
-    background-color: white;
-    text-align: center;
-}
-
-.projects-title {
-    font-size: 2.5rem;
-    font-weight: 800;
-    color: var(--primary-blue);
-    margin-bottom: 3rem;
-    border-bottom: 4px solid var(--accent-orange);
-    display: inline-block;
-    padding-bottom: 0.5rem;
+    background: var(--color-bg);
+    padding: var(--space-xxl) 0;
 }
 
 .projects-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 2rem;
-    max-width: 1000px;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-lg);
+    max-width: 900px;
     margin: 0 auto;
 }
 
 .project-card {
-    background-color: white;
-    border-radius: 12px;
+    background: var(--color-bg-alt);
+    border-radius: var(--radius-xl);
     overflow: hidden;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    text-align: left;
-    transition: transform 0.3s ease;
+    box-shadow: var(--shadow-md);
+    border: 1px solid var(--color-border);
+    transition: all var(--transition-normal);
 }
 
 .project-card:hover {
-    transform: translateY(-5px);
+    transform: translateY(-8px);
+    box-shadow: var(--shadow-lg);
 }
 
 .project-image {
-    height: 200px;
-    background-color: #ddd;
-    /* Placeholder color */
+    position: relative;
+    height: 220px;
     background-size: cover;
     background-position: center;
 }
 
-/* You would ideally replace these with actual image URLs or imports */
-.gaushala-img {
-    background-image: url('https://placehold.co/600x400/orange/white?text=Gaushala');
-}
-
-.mandir-img {
-    background-image: url('https://placehold.co/600x400/darkblue/white?text=Shiv+Mandir');
+.project-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, transparent 40%, rgba(139, 69, 19, 0.6) 100%);
 }
 
 .project-content {
-    padding: 1.5rem;
+    padding: var(--space-md);
 }
 
-.project-name {
-    color: var(--accent-orange);
-    font-size: 1.3rem;
-    font-weight: 700;
-    margin-bottom: 0.8rem;
-}
-
-.project-desc {
-    color: #555;
-    font-size: 0.9rem;
-    line-height: 1.5;
-    margin-bottom: 1.5rem;
-}
-
-.project-btn {
-    background-color: var(--primary-blue);
-    color: white;
-    border: none;
-    padding: 0.6rem 1.2rem;
-    border-radius: 6px;
-    font-size: 0.9rem;
+.project-title {
+    font-size: 1.375rem;
     font-weight: 600;
-    cursor: pointer;
-    width: 100%;
-    transition: background-color 0.3s ease;
+    color: var(--color-primary);
+    margin-bottom: var(--space-xs);
 }
 
-.project-btn:hover {
-    background-color: #1a3c5a;
+.project-description {
+    font-size: 0.9375rem;
+    color: var(--color-text-light);
+    margin-bottom: var(--space-md);
+    line-height: 1.7;
+}
+
+.project-buttons {
+    display: flex;
+    gap: var(--space-sm);
+}
+
+.project-read-more {
+    flex: 1;
+    padding: 0.75rem 1rem;
+    font-size: 0.875rem;
+}
+
+.project-donate {
+    flex: 1;
+    padding: 0.75rem 1rem;
+    font-size: 0.875rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .projects-grid {
+        grid-template-columns: 1fr;
+        max-width: 500px;
+    }
+
+    .project-image {
+        height: 200px;
+    }
+
+    .project-buttons {
+        flex-direction: column;
+    }
 }

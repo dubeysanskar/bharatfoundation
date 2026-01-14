@@ -1,28 +1,73 @@
 .footer {
-    background-color: var(--primary-blue);
-    color: white;
-    /* Text color orange in image? No, mostly white/orange */
-    padding: 3rem 2rem;
-    text-align: center;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    background: linear-gradient(180deg, #8B4513 0%, #6B3E0A 100%);
+    padding: var(--space-xl) 0 var(--space-md);
+}
+
+.footer-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: var(--space-md);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.footer-brand {
+    text-align: left;
 }
 
 .footer-title {
-    color: var(--accent-orange);
-    font-size: 1.2rem;
-    margin-bottom: 0.5rem;
+    font-family: var(--font-heading);
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: white;
+    margin-bottom: var(--space-xs);
 }
 
-.footer-copyright {
-    color: #8899a6;
-    font-size: 0.8rem;
-    margin-bottom: 1rem;
+.brand-accent {
+    color: var(--color-accent);
 }
 
-.footer-socials {
+.footer-tagline {
+    font-size: 0.9375rem;
+    color: rgba(255, 255, 255, 0.7);
+    margin: 0;
+}
+
+.footer-links {
     display: flex;
-    justify-content: center;
-    gap: 1rem;
-    color: var(--accent-orange);
-    font-size: 1.2rem;
+    gap: var(--space-md);
+}
+
+.footer-link {
+    font-size: 0.875rem;
+    color: rgba(255, 255, 255, 0.6);
+    transition: color var(--transition-fast);
+}
+
+.footer-link:hover {
+    color: var(--color-accent);
+}
+
+.footer-bottom {
+    padding-top: var(--space-md);
+    text-align: center;
+}
+
+.copyright {
+    font-size: 0.875rem;
+    color: rgba(255, 255, 255, 0.5);
+    margin: 0;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .footer-content {
+        flex-direction: column;
+        text-align: center;
+        gap: var(--space-md);
+    }
+
+    .footer-brand {
+        text-align: center;
+    }
 }

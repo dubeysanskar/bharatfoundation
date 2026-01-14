@@ -1,33 +1,25 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
+import { Link } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
 import './Moments.css';
 
 const Moments = () => {
     const { t } = useLanguage();
-    const [moments, setMoments] = useState([]);
-
-    useEffect(() => {
-        const fetchMoments = async () => {
-            try {
-                const response = await fetch('/api/moments');
-                const data = await response.json();
-                setMoments(data.data);
-            } catch (error) {
-                console.error('Error fetching moments:', error);
-            }
-        };
-        fetchMoments();
-    }, []);
 
     return (
-        <section id="gallery" className="moments" style={{ textAlign: 'center', padding: '4rem 2rem' }}>
-            <h2 className="moments-title">{t.moments.title}</h2>
-            <p style={{ marginBottom: '2rem', fontSize: '1.2rem', color: '#555' }}>
-                Explore our journey and the impact we've created together.
-            </p>
-            <a href="/gallery" className="donate-btn" style={{ display: 'inline-block', textDecoration: 'none' }}>
-                View Full Gallery
-            </a>
+        <section id="gallery" className="moments">
+            <div className="container">
+                <div className="moments-content">
+                    <span className="section-label">Gallery</span>
+                    <h2 className="moments-title">{t.moments.title}</h2>
+                    <p className="moments-description">
+                        Explore our journey and the impact we've created together through years of dedicated service.
+                    </p>
+                    <Link to="/gallery" className="btn btn-primary">
+                        View Full Gallery
+                    </Link>
+                </div>
+            </div>
         </section>
     );
 };

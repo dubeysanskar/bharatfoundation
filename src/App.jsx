@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import { LanguageProvider } from './context/LanguageContext';
 import './App.css';
 import Navbar from './components/Navbar';
@@ -17,6 +17,8 @@ import AdminLogin from './pages/AdminLogin';
 import AdminDashboard from './pages/AdminDashboard';
 import Gallery from './pages/Gallery';
 import ProjectDetails from './pages/ProjectDetails';
+import PrivacyPolicy from './pages/PrivacyPolicy';
+import TermsConditions from './pages/TermsConditions';
 
 import SEO from './components/SEO';
 
@@ -147,26 +149,39 @@ const VerifyDonationPage = () => (
   </>
 );
 
+// Layout component that conditionally renders Navbar and Footer
+const AppLayout = () => {
+  const location = useLocation();
+  const isAdminPage = location.pathname.startsWith('/admin');
+
+  return (
+    <div className="app">
+      {!isAdminPage && <Navbar />}
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/donate" element={<DonationPage />} />
+        <Route path="/verify/:id" element={<VerifyDonationPage />} />
+        <Route path="/admin/login" element={<AdminLoginPage />} />
+        <Route path="/admin/dashboard" element={<AdminDashboardPage />} />
+        <Route path="/gallery" element={<GalleryPage />} />
+        <Route path="/projects/:id" element={<ProjectDetailsPage />} />
+        <Route path="/privacy" element={<PrivacyPolicy />} />
+        <Route path="/terms" element={<TermsConditions />} />
+      </Routes>
+      {!isAdminPage && <Footer />}
+    </div>
+  );
+};
+
 function App() {
   return (
     <LanguageProvider>
       <Router>
-        <div className="app">
-          <Navbar />
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/donate" element={<DonationPage />} />
-            <Route path="/verify/:id" element={<VerifyDonationPage />} />
-            <Route path="/admin/login" element={<AdminLoginPage />} />
-            <Route path="/admin/dashboard" element={<AdminDashboardPage />} />
-            <Route path="/gallery" element={<GalleryPage />} />
-            <Route path="/projects/:id" element={<ProjectDetailsPage />} />
-          </Routes>
-          <Footer />
-        </div>
+        <AppLayout />
       </Router>
     </LanguageProvider>
   );
 }
 
 export default App;
+

@@ -1,22 +1,27 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { useLanguage } from '../context/LanguageContext';
-import '../sections/Projects.css'; // Reuse existing styles
+import './ProjectDetails.css';
 
 const ProjectDetails = () => {
     const { id } = useParams();
     const navigate = useNavigate();
-    const { t } = useLanguage();
     const [project, setProject] = useState(null);
     const [loading, setLoading] = useState(true);
+
+    // Scroll to top when page loads
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []);
 
     useEffect(() => {
         const fetchProject = async () => {
             try {
                 const response = await fetch(`/api/projects/${id}`);
-                if (!response.ok) throw new Error('Project not found');
                 const data = await response.json();
-                setProject(data.data);
+                // API returns {data: project} or {error: ...}
+                if (data.data) {
+                    setProject(data.data);
+                }
             } catch (error) {
                 console.error('Error fetching project:', error);
             } finally {
@@ -26,35 +31,153 @@ const ProjectDetails = () => {
         fetchProject();
     }, [id]);
 
-    if (loading) return <div style={{ padding: '4rem', textAlign: 'center' }}>Loading...</div>;
-    if (!project) return <div style={{ padding: '4rem', textAlign: 'center' }}>Project not found</div>;
+    if (loading) {
+        return (
+            <div className="project-details-loading">
+                <div className="loader"></div>
+                <p>Loading project details...</p>
+            </div>
+        );
+    }
+
+    if (!project) {
+        return (
+            <div className="project-details-error">
+                <h2>Project Not Found</h2>
+                <p>The project you're looking for doesn't exist.</p>
+                <button className="btn btn-primary" onClick={() => navigate('/')}>
+                    Go Back Home
+                </button>
+            </div>
+        );
+    }
+
+    // Default extended content if no long_description exists
+    const getExtendedContent = () => {
+        if (project.long_description) {
+            return project.long_description;
+        }
+
+        // Default content based on project title
+        if (project.title.toLowerCase().includes('gaushala')) {
+            return `Our Gaushala Seva project is dedicated to providing a safe sanctuary for abandoned and 
+injured cows in and around Prayagraj. We believe in the sacred duty of protecting these gentle 
+creatures that have served humanity for millennia.
+
+At our Gaushala, we currently care for over 50 rescued cattle, providing them with nutritious 
+food, clean water, medical care, and a loving environment. Our dedicated team of volunteers 
+works tirelessly to ensure that every animal receives the attention and care they deserve.
+
+The Gaushala operates on a sustainable model where we produce organic manure and engage in 
+small-scale dairy operations to support our running costs. We also conduct regular health 
+camps and have tie-ups with veterinary doctors for emergency medical needs.
+
+Your generous donations help us expand our facilities, improve medical infrastructure, and 
+rescue more cattle in need. Together, we can protect and serve these sacred animals while 
+preserving our cultural heritage.`;
+        }
+
+        if (project.title.toLowerCase().includes('mandir') || project.title.toLowerCase().includes('shiv')) {
+            return `The Shiv Mandir Construction project is our flagship initiative to build a magnificent 
+spiritual center for the community of Prayagraj. This temple will serve as a beacon of 
+faith, culture, and community gathering for generations to come.
+
+Our vision is to create not just a temple, but a complete spiritual complex that includes 
+meditation halls, a community kitchen (langar), educational facilities for Sanskrit and 
+religious studies, and spaces for cultural events. The architecture draws inspiration from 
+ancient temple designs while incorporating modern construction techniques for durability.
+
+The construction is being carried out in phases, with the main sanctum sanctorum and the 
+outer mandap already in progress. We are using high-quality materials including marble, 
+sandstone, and traditional brass work to ensure the temple stands the test of time.
+
+We invite devotees and well-wishers to be part of this divine endeavor. Your contributions 
+will directly support the construction work, procurement of divine idols, and the finishing 
+touches that will make this temple a jewel of Prayagraj.`;
+        }
+
+        // Generic default content
+        return `This project is one of our key initiatives at Bharat Foundation, designed to create 
+meaningful impact in the lives of people across Prayagraj and surrounding areas.
+
+Our dedicated team of volunteers and staff work tirelessly to ensure the success of this 
+project. We believe in transparency, accountability, and community participation in all 
+our endeavors.
+
+With your support, we have been able to make significant progress. However, there is still 
+much work to be done. Every contribution, no matter how small, helps us move closer to our 
+goals and extends our reach to those in need.
+
+Join us in this journey of service and compassion. Together, we can build a better tomorrow 
+for our community.`;
+    };
 
     return (
-        <div style={{ padding: '4rem 2rem', minHeight: '80vh', backgroundColor: '#f8f9fa' }}>
-            <div style={{ maxWidth: '900px', margin: '0 auto', backgroundColor: 'white', padding: '3rem', borderRadius: '16px', boxShadow: '0 10px 30px rgba(0,0,0,0.05)' }}>
-                <button onClick={() => navigate(-1)} style={{ marginBottom: '2rem', padding: '0.6rem 1.2rem', cursor: 'pointer', background: 'white', border: '1px solid #e0e0e0', borderRadius: '8px', display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.95rem', color: '#555', transition: 'all 0.2s' }}>
-                    &larr; Back to Projects
-                </button>
-
-                <div style={{ borderRadius: '12px', overflow: 'hidden', marginBottom: '2.5rem', boxShadow: '0 4px 12px rgba(0,0,0,0.08)' }}>
-                    <img src={project.image} alt={project.title} style={{ width: '100%', maxHeight: '500px', objectFit: 'cover', display: 'block' }} />
+        <div className="project-details">
+            <div className="project-details-hero" style={{ backgroundImage: `url(${project.image})` }}>
+                <div className="hero-overlay"></div>
+                <div className="hero-content">
+                    <span className="project-badge">Our Project</span>
+                    <h1 className="project-title">{project.title}</h1>
                 </div>
+            </div>
 
-                <h1 style={{ color: '#1a1a1a', marginBottom: '1.5rem', fontSize: '2.5rem', fontWeight: '700', lineHeight: '1.2' }}>{project.title}</h1>
+            <div className="project-details-content">
+                <div className="content-container">
+                    <div className="project-main">
+                        <section className="project-section">
+                            <h2>About This Project</h2>
+                            <p className="project-intro">{project.description}</p>
+                        </section>
 
-                <div style={{ fontSize: '1.15rem', lineHeight: '1.8', color: '#4a4a4a', marginBottom: '3rem', whiteSpace: 'pre-line' }}>
-                    {project.description}
+                        <section className="project-section">
+                            <h2>Our Mission</h2>
+                            <div className="project-long-content">
+                                {getExtendedContent().split('\n\n').map((para, index) => (
+                                    <p key={index}>{para}</p>
+                                ))}
+                            </div>
+                        </section>
+
+                        <section className="project-section impact-section">
+                            <h2>Impact & Progress</h2>
+                            <div className="impact-grid">
+                                <div className="impact-card">
+                                    <span className="impact-number">100+</span>
+                                    <span className="impact-label">Lives Touched</span>
+                                </div>
+                                <div className="impact-card">
+                                    <span className="impact-number">20+</span>
+                                    <span className="impact-label">Volunteers</span>
+                                </div>
+                                <div className="impact-card">
+                                    <span className="impact-number">2</span>
+                                    <span className="impact-label">Years Active</span>
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+
+                    <aside className="project-sidebar">
+                        <div className="donate-card">
+                            <h3>Support This Project</h3>
+                            <p>Your donation helps us continue this important work.</p>
+                            <button
+                                className="btn btn-primary donate-btn"
+                                onClick={() => { window.scrollTo(0, 0); navigate('/donate'); }}
+                            >
+                                Donate Now
+                            </button>
+                        </div>
+
+                        <div className="contact-card">
+                            <h3>Get Involved</h3>
+                            <p>Want to volunteer or learn more?</p>
+                            <p className="contact-email">📧 bharatfoundation4@gmail.com</p>
+                            <p className="contact-phone">📞 +91 9911031689</p>
+                        </div>
+                    </aside>
                 </div>
-
-                <button
-                    className="project-btn"
-                    style={{ width: '100%', padding: '1.2rem', fontSize: '1.3rem', fontWeight: '600', borderRadius: '10px', backgroundColor: '#d32f2f', color: 'white', border: 'none', cursor: 'pointer', transition: 'background 0.3s' }}
-                    onClick={() => navigate('/donate')}
-                    onMouseOver={(e) => e.target.style.backgroundColor = '#b71c1c'}
-                    onMouseOut={(e) => e.target.style.backgroundColor = '#d32f2f'}
-                >
-                    Donate to this Cause
-                </button>
             </div>
         </div>
     );

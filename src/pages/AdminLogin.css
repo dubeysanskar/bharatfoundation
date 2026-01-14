@@ -2,40 +2,106 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 80vh;
-    background-color: #f0f2f5;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #FFF8F0 0%, #FFE4C4 50%, #FFDAB3 100%);
+    padding: 2rem;
 }
 
 .login-card {
     background: white;
-    padding: 2rem;
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    padding: 3rem;
+    border-radius: 20px;
+    box-shadow: 0 10px 40px rgba(139, 69, 19, 0.15);
     text-align: center;
-    width: 300px;
+    width: 100%;
+    max-width: 400px;
+}
+
+.login-card h2 {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 2rem;
+    color: #8B4513;
+    margin-bottom: 0.5rem;
+}
+
+.login-card::before {
+    content: "🔐";
+    display: block;
+    font-size: 3rem;
+    margin-bottom: 1rem;
 }
 
 .login-input {
     width: 100%;
-    padding: 0.8rem;
-    margin: 1rem 0;
-    border: 1px solid #ccc;
-    border-radius: 5px;
+    padding: 1rem 1.25rem;
+    margin: 1.5rem 0;
+    border: 2px solid #E8DDD0;
+    border-radius: 10px;
+    font-size: 1rem;
+    font-family: 'Poppins', sans-serif;
+    background: #FFF8F0;
+    color: #3D2914;
+    transition: all 0.3s ease;
+}
+
+.login-input::placeholder {
+    color: #8B7355;
+}
+
+.login-input:focus {
+    outline: none;
+    border-color: #FF6B35;
+    background: white;
+    box-shadow: 0 0 0 4px rgba(255, 107, 53, 0.1);
 }
 
 .login-btn {
     width: 100%;
-    padding: 0.8rem;
-    background-color: var(--primary-blue);
+    padding: 1rem;
+    background: linear-gradient(135deg, #FF6B35 0%, #E55A2B 100%);
     color: white;
     border: none;
-    border-radius: 5px;
+    border-radius: 10px;
     cursor: pointer;
-    font-weight: bold;
+    font-size: 1rem;
+    font-weight: 600;
+    font-family: 'Poppins', sans-serif;
+    box-shadow: 0 4px 15px rgba(255, 107, 53, 0.3);
+    transition: all 0.3s ease;
+}
+
+.login-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(255, 107, 53, 0.4);
 }
 
 .error-msg {
-    color: red;
+    color: #d00000;
     margin-top: 1rem;
     font-size: 0.9rem;
+    font-weight: 500;
+    background: #fff0f0;
+    padding: 0.75rem;
+    border-radius: 8px;
+    border: 1px solid #ffd0d0;
+}
+
+.back-home-btn {
+    width: 100%;
+    margin-top: 1.5rem;
+    padding: 0.875rem 1rem;
+    background: transparent;
+    color: #8B4513;
+    border: 2px solid #8B4513;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 0.95rem;
+    font-weight: 600;
+    font-family: 'Poppins', sans-serif;
+    transition: all 0.3s ease;
+}
+
+.back-home-btn:hover {
+    background: #8B4513;
+    color: white;
 }

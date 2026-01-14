@@ -36,86 +36,82 @@ const Contact = () => {
     };
 
     return (
-        <section id="contact" className="contact-section">
-            <div className="contact-bg-overlay"></div>
-            <div className="contact-content-wrapper">
-                <h2 className="section-title">{t.contact.title}</h2>
-
+        <section id="contact" className="contact">
+            <div className="container">
                 <div className="contact-grid">
-                    <div className="contact-info-card">
-                        <h3>{t.contact.getInTouch}</h3>
-                        <p className="contact-desc">
-                            We'd love to hear from you. Whether you have a question about our projects,
-                            want to volunteer, or just want to say hello, feel free to reach out.
+                    <div className="contact-info">
+                        <span className="section-label">Contact</span>
+                        <h2 className="contact-title">{t.contact.title}</h2>
+                        <p className="contact-description">
+                            Have questions or want to get involved? Reach out to us and we'll respond as soon as possible.
                         </p>
 
-                        <div className="info-item">
-                            <span className="icon">📧</span>
-                            <div className="details">
-                                <h4>Email Us</h4>
-                                <p>bharatfoundation4@gmail.com</p>
+                        <div className="contact-details">
+                            <div className="contact-item">
+                                <div className="contact-icon">📍</div>
+                                <div>
+                                    <h4>Address</h4>
+                                    <p>Prayagraj, Uttar Pradesh, India</p>
+                                </div>
                             </div>
-                        </div>
-
-                        <div className="info-item">
-                            <span className="icon">📍</span>
-                            <div className="details">
-                                <h4>Visit Us</h4>
-                                <p>173k/10, Purvanchal chauraha, 60 feet road, Rajrooppur, 211011</p>
+                            <div className="contact-item">
+                                <div className="contact-icon">📧</div>
+                                <div>
+                                    <h4>Email</h4>
+                                    <p>bharatfoundation4@gmail.com</p>
+                                </div>
                             </div>
-                        </div>
-
-                        <div className="info-item">
-                            <span className="icon">📞</span>
-                            <div className="details">
-                                <h4>Call Us</h4>
-                                <p>+91 9911031689</p>
+                            <div className="contact-item">
+                                <div className="contact-icon">📞</div>
+                                <div>
+                                    <h4>Phone</h4>
+                                    <p>+91 9911031689</p>
+                                </div>
                             </div>
                         </div>
                     </div>
 
-                    <form className="contact-form-card" onSubmit={handleSubmit}>
-                        <div className="form-group">
-                            <label>Name</label>
-                            <input
-                                type="text"
-                                name="name"
-                                placeholder={t.contact.namePlaceholder}
-                                value={formData.name}
-                                onChange={handleChange}
-                                required
-                            />
-                        </div>
-
-                        <div className="form-group">
-                            <label>Email</label>
-                            <input
-                                type="email"
-                                name="email"
-                                placeholder={t.contact.emailPlaceholder}
-                                value={formData.email}
-                                onChange={handleChange}
-                                required
-                            />
-                        </div>
-
-                        <div className="form-group">
-                            <label>Message</label>
-                            <textarea
-                                name="message"
-                                placeholder={t.contact.messagePlaceholder}
-                                rows="4"
-                                value={formData.message}
-                                onChange={handleChange}
-                                required
-                            ></textarea>
-                        </div>
-
-                        <button type="submit" className="submit-btn">
-                            {t.contact.send}
-                        </button>
-                        {status && <p className="status-message">{status}</p>}
-                    </form>
+                    <div className="contact-form-card">
+                        <form className="contact-form" onSubmit={handleSubmit}>
+                            <div className="form-group">
+                                <label>Your Name</label>
+                                <input
+                                    type="text"
+                                    name="name"
+                                    placeholder={t.contact.namePlaceholder}
+                                    value={formData.name}
+                                    onChange={handleChange}
+                                    required
+                                />
+                            </div>
+                            <div className="form-group">
+                                <label>Email Address</label>
+                                <input
+                                    type="email"
+                                    name="email"
+                                    placeholder={t.contact.emailPlaceholder}
+                                    value={formData.email}
+                                    onChange={handleChange}
+                                    required
+                                />
+                            </div>
+                            <div className="form-group">
+                                <label>Your Message</label>
+                                <textarea
+                                    name="message"
+                                    placeholder={t.contact.msgPlaceholder}
+                                    value={formData.message}
+                                    onChange={handleChange}
+                                    rows="5"
+                                    required
+                                ></textarea>
+                            </div>
+                            <button type="submit" className="btn btn-primary submit-btn">
+                                {t.contact.send}
+                            </button>
+                            {status && <p className="form-status">{status}</p>}
+                        </form>
+                    </div>
                 </div>
             </div>
         </section>

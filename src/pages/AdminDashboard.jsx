@@ -10,6 +10,7 @@ import ManageMoments from '../components/admin/ManageMoments';
 const AdminDashboard = () => {
     const navigate = useNavigate();
     const [activeTab, setActiveTab] = useState('members');
+    const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
     useEffect(() => {
         const token = localStorage.getItem('adminToken');
@@ -23,14 +24,25 @@ const AdminDashboard = () => {
         navigate('/admin/login');
     };
 
+    const handleTabChange = (tab) => {
+        setActiveTab(tab);
+        setMobileMenuOpen(false); // Close menu on tab change for mobile
+    };
+
     return (
         <div className="admin-dashboard">
-            <aside className="sidebar">
+            <aside className={`sidebar ${mobileMenuOpen ? 'mobile-open' : ''}`}>
                 <h2>Admin Panel</h2>
+                <button
+                    className="mobile-menu-toggle"
+                    onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                >
+                    {mobileMenuOpen ? '✕' : '☰'}
+                </button>
                 <nav>
-                    <button className={activeTab === 'members' ? 'active' : ''} onClick={() => setActiveTab('members')}>Members</button>
-                    <button className={activeTab === 'projects' ? 'active' : ''} onClick={() => setActiveTab('projects')}>Projects</button>
-                    <button className={activeTab === 'moments' ? 'active' : ''} onClick={() => setActiveTab('moments')}>Moments</button>
+                    <button className={activeTab === 'members' ? 'active' : ''} onClick={() => handleTabChange('members')}>Members</button>
+                    <button className={activeTab === 'projects' ? 'active' : ''} onClick={() => handleTabChange('projects')}>Projects</button>
+                    <button className={activeTab === 'moments' ? 'active' : ''} onClick={() => handleTabChange('moments')}>Moments</button>
                 </nav>
                 <button className="logout-btn" onClick={handleLogout}>Logout</button>
             </aside>

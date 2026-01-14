@@ -1,69 +1,69 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 const ManageProjects = () => {
     const [projects, setProjects] = useState([]);
-    const [isEditing, setIsEditing] = useState(false);
-    const [formData, setFormData] = useState({ title: '', description: '' });
-    const [imageFile, setImageFile] = useState(null);
-    const [editId, setEditId] = useState(null);
+    const [showForm, setShowForm] = useState(false);
+    const [formData, setFormData] = useState({
+        title: '',
+        description: '',
+        long_description: '',
+        image: null
+    });
 
     useEffect(() => {
         fetchProjects();
     }, []);
 
     const fetchProjects = async () => {
-        const response = await fetch('/api/projects');
-        const data = await response.json();
-        setProjects(data.data);
+        try {
+            const response = await fetch('/api/projects');
+            const data = await response.json();
+            setProjects(data.data || []);
+        } catch (error) {
+            console.error('Error fetching projects:', error);
+        }
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        let imageUrl = formData.image;
-
-        if (imageFile) {
-            const uploadData = new FormData();
-            uploadData.append('image', imageFile);
-            const uploadRes = await fetch('/api/upload', {
-                method: 'POST',
-                body: uploadData
-            });
-            const uploadJson = await uploadRes.json();
-            if (uploadJson.success) {
-                imageUrl = uploadJson.imageUrl;
-            }
+        const formDataToSend = new FormData();
+        formDataToSend.append('title', formData.title);
+        formDataToSend.append('description', formData.description);
+        formDataToSend.append('long_description', formData.long_description);
+        if (formData.image) {
+            formDataToSend.append('image', formData.image);
         }
 
-        const payload = { ...formData, image: imageUrl };
-        const url = isEditing
-            ? `/api/projects/${editId}`
-            : '/api/projects';
-        const method = isEditing ? 'PUT' : 'POST';
-
-        await fetch(url, {
-            method,
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(payload)
-        });
-
-        setFormData({ title: '', description: '' });
-        setImageFile(null);
-        setIsEditing(false);
-        setEditId(null);
-        fetchProjects();
-    };
-
-    const handleEdit = (project) => {
-        setFormData(project);
-        setEditId(project.id);
-        setIsEditing(true);
+        try {
+            const response = await fetch('/api/projects', {
+                method: 'POST',
+                body: formDataToSend
+            });
+            const data = await response.json();
+            if (data.success) {
+                fetchProjects();
+                setFormData({ title: '', description: '', long_description: '', image: null });
+                setShowForm(false);
+            }
+        } catch (error) {
+            console.error('Error adding project:', error);
+        }
     };
 
     const handleDelete = async (id) => {
-        if (window.confirm('Delete this project?')) {
-            await fetch(`/api/projects/${id}`, { method: 'DELETE' });
-            fetchProjects();
+        if (!window.confirm('Are you sure you want to delete this project?')) return;
+
+        try {
+            const response = await fetch(`/api/projects/${id}`, {
+                method: 'DELETE'
+            });
+            const data = await response.json();
+            if (data.success) {
+                fetchProjects();
+            }
+        } catch (error) {
+            console.error('Error deleting project:', error);
         }
     };
 
@@ -71,18 +71,47 @@ const ManageProjects = () => {
         <div className="admin-section">
             <div className="admin-header">
                 <h2>Manage Projects</h2>
+                <button className="add-btn" onClick={() => setShowForm(!showForm)}>
+                    {showForm ? 'Cancel' : '+ Add Project'}
+                </button>
             </div>
 
-            <form onSubmit={handleSubmit} style={{ marginBottom: '2rem', padding: '1rem', background: '#eee', borderRadius: '8px' }}>
-                <h3>{isEditing ? 'Edit Project' : 'Add New Project'}</h3>
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '1rem' }}>
-                    <input placeholder="Title" value={formData.title} onChange={e => setFormData({ ...formData, title: e.target.value })} required className="form-input" />
-                    <textarea placeholder="Description" value={formData.description} onChange={e => setFormData({ ...formData, description: e.target.value })} rows="3" className="form-input" />
-                    <input type="file" onChange={e => setImageFile(e.target.files[0])} className="form-input" />
-                </div>
-                <button type="submit" className="add-btn" style={{ marginTop: '1rem' }}>{isEditing ? 'Update' : 'Add'} Project</button>
-                {isEditing && <button type="button" onClick={() => { setIsEditing(false); setFormData({ title: '', description: '' }); }} style={{ marginLeft: '1rem' }}>Cancel</button>}
-            </form>
+            {showForm && (
+                <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                    <h3>Add New Project</h3>
+                    <input
+                        type="text"
+                        placeholder="Title"
+                        className="form-input"
+                        value={formData.title}
+                        onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+                        required
+                    />
+                    <input
+                        type="text"
+                        placeholder="Short Description (for cards)"
+                        className="form-input"
+                        value={formData.description}
+                        onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                        required
+                    />
+                    <textarea
+                        placeholder="Long Description for Project Page (3-4 paragraphs, use empty lines to separate)"
+                        className="form-input"
+                        rows="8"
+                        value={formData.long_description}
+                        onChange={(e) => setFormData({ ...formData, long_description: e.target.value })}
+                        style={{ resize: 'vertical' }}
+                    />
+                    <input
+                        type="file"
+                        accept="image/*"
+                        className="form-input"
+                        onChange={(e) => setFormData({ ...formData, image: e.target.files[0] })}
+                    />
+                    <button type="submit" className="add-btn">Add Project</button>
+                </form>
+            )}
 
             <table className="data-table">
                 <thead>
@@ -94,14 +123,24 @@ const ManageProjects = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    {projects.map(p => (
-                        <tr key={p.id}>
-                            <td><img src={p.image} alt={p.title} style={{ width: '80px', height: '50px', objectFit: 'cover', borderRadius: '4px' }} /></td>
-                            <td>{p.title}</td>
-                            <td>{p.description}</td>
+                    {projects.map((project) => (
+                        <tr key={project.id}>
                             <td>
-                                <button className="action-btn edit-btn" onClick={() => handleEdit(p)}>Edit</button>
-                                <button className="action-btn delete-btn" onClick={() => handleDelete(p.id)}>Delete</button>
+                                <img
+                                    src={project.image}
+                                    alt={project.title}
+                                    style={{ width: '80px', height: '60px', objectFit: 'cover', borderRadius: '8px' }}
+                                />
+                            </td>
+                            <td>{project.title}</td>
+                            <td>{project.description?.substring(0, 50)}...</td>
+                            <td>
+                                <button
+                                    className="action-btn delete-btn"
+                                    onClick={() => handleDelete(project.id)}
+                                >
+                                    Delete
+                                </button>
                             </td>
                         </tr>
                     ))}

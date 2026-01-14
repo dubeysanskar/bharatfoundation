@@ -136,9 +136,46 @@ app.post('/api/contact', async (req, res) => {
 
 // --- DONATION APIs ---
 app.post('/api/donate', (req, res) => {
-    const { name, amount, type, email } = req.body;
+    const {
+        amount,
+        citizenship,
+        want80G,
+        panCard,
+        donationType,
+        title,
+        fullName,
+        dob,
+        email,
+        mobile,
+        address,
+        pinCode,
+        state,
+        city
+    } = req.body;
+
+    // For foreign nationals, just send email notification
+    if (citizenship === 'foreign') {
+        const adminEmailBody = `🌍 Foreign National Donation Inquiry
+
+Donor Details:
+--------------
+Name: ${title} ${fullName}
+Email: ${email}
+Mobile: ${mobile}
+Amount Interested: ₹${amount}
+Date of Birth: ${dob || 'Not provided'}
+
+This person has expressed interest in donating from outside India. 
+Please contact them to provide international donation instructions.`;
+
+        sendEmail('bharatfoundation4@gmail.com', '🌍 Foreign Donation Inquiry - Bharat Foundation', adminEmailBody);
+
+        return res.json({ success: true, message: 'Your inquiry has been submitted.' });
+    }
+
+    // For Indian citizens
     const sql = 'INSERT INTO donors (name, amount, type, email, verified) VALUES (?, ?, ?, ?, 0)';
-    const params = [name, amount, type, email];
+    const params = [fullName, amount, donationType, email];
 
     getDb().run(sql, params, async function (err) {
         if (err) {
@@ -146,22 +183,86 @@ app.post('/api/donate', (req, res) => {
             return;
         }
         const donorId = this.lastID;
-        const verificationLink = `https://bharat-foundation.onrender.com/verify/${donorId}`; // Updated to Prod URL
+        const verificationLink = `https://bharat-foundation.onrender.com/verify/${donorId}`;
 
-        const donorEmailBody = `Thank you for your donation of ₹${amount}!\n\nYour support helps us make a real difference. We have received your donation request and it is currently under verification.`;
-        const adminEmailBody = `New Donation Initiated\n\nDonor Name: ${name}\nAmount: ₹${amount}\nDonor Email: ${email}\nType: ${type}\n\nVerification Link: ${verificationLink}`;
+        // Comprehensive admin email with all donor details
+        let adminEmailBody = `🆕 New Donation Submission
 
-        // Try to send emails, but don't fail the donation if email fails (just log it)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+DONATION DETAILS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Amount: ₹${amount}
+Type: ${donationType === 'monthly' ? 'Monthly Donation' : 'One-time Donation'}
+Citizenship: Indian Citizen
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+DONOR INFORMATION
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Name: ${title} ${fullName}
+Email: ${email}
+Mobile: ${mobile}
+Date of Birth: ${dob || 'Not provided'}`;
+
+        if (want80G) {
+            adminEmailBody += `
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+80G CERTIFICATE REQUESTED
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+PAN Card: ${panCard}
+Address: ${address}
+City: ${city}
+State: ${state}
+PIN Code: ${pinCode}
+
+⚠️ Please issue 80G certificate after payment verification.`;
+        }
+
+        adminEmailBody += `
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+VERIFICATION
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Verification Link: ${verificationLink}
+Donor ID: ${donorId}
+
+Submitted: ${new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' })}`;
+
+        // Donor thank you email
+        const donorEmailBody = `Dear ${title} ${fullName},
+
+Thank you for your generous support to Bharat Foundation!
+
+We have received your donation details:
+- Amount: ₹${amount}
+- Type: ${donationType === 'monthly' ? 'Monthly Donation' : 'One-time Donation'}
+${want80G ? `- 80G Certificate: Requested (PAN: ${panCard})` : ''}
+
+Please complete your payment using the payment details shown on our website:
+- UPI ID: bharatfoundation@upi
+- Bank: Punjab National Bank
+- Account: 3913002100009042
+- IFSC: PUNB0391300
+
+After your payment is received and verified, you will receive a confirmation email.
+${want80G ? '\nYour 80G certificate will be sent to your address after payment verification.' : ''}
+
+With gratitude,
+Bharat Foundation
+📧 bharatfoundation4@gmail.com
+📞 +91 9911031689`;
+
+        // Send emails
         const donorEmailResult = await sendEmail(email, 'Thank You for Your Donation - Bharat Foundation', donorEmailBody);
-        await sendEmail('bharatfoundation4@gmail.com', 'New Donation Alert (Verification Required)', adminEmailBody);
+        await sendEmail('bharatfoundation4@gmail.com', `💝 New Donation: ₹${amount} from ${fullName}`, adminEmailBody);
 
         if (donorEmailResult.success) {
-            res.json({ success: true, message: 'Donation initiated. Check your email.', id: donorId });
+            res.json({ success: true, message: 'Donation details submitted successfully!', id: donorId });
         } else {
             const isLimit = donorEmailResult.error?.message?.toLowerCase().includes('limit') || donorEmailResult.error?.statusCode === 429;
             const msg = isLimit
-                ? 'Donations down: Daily email limit exhausted. Please try again tomorrow.'
-                : 'Donation recorded, but email failed. Please contact admin.';
+                ? 'Daily email limit reached. Your donation is recorded but confirmation email could not be sent.'
+                : 'Donation recorded successfully!';
 
             res.json({ success: true, message: msg, id: donorId, emailFailed: true });
         }
@@ -375,10 +476,11 @@ app.get('/api/projects/:id', (req, res) => {
     });
 });
 
-app.post('/api/projects', (req, res) => {
-    const { title, description, image } = req.body;
-    const sql = 'INSERT INTO projects (title, description, image) VALUES (?, ?, ?)';
-    getDb().run(sql, [title, description, image], function (err) {
+app.post('/api/projects', upload.single('image'), (req, res) => {
+    const { title, description, long_description } = req.body;
+    const image = req.file ? `/uploads/${req.file.filename}` : null;
+    const sql = 'INSERT INTO projects (title, description, long_description, image) VALUES (?, ?, ?, ?)';
+    getDb().run(sql, [title, description, long_description || '', image], function (err) {
         if (err) {
             res.status(400).json({ error: err.message });
             return;
@@ -388,9 +490,9 @@ app.post('/api/projects', (req, res) => {
 });
 
 app.put('/api/projects/:id', (req, res) => {
-    const { title, description, image } = req.body;
-    const sql = 'UPDATE projects SET title = ?, description = ?, image = ? WHERE id = ?';
-    getDb().run(sql, [title, description, image, req.params.id], function (err) {
+    const { title, description, long_description, image } = req.body;
+    const sql = 'UPDATE projects SET title = ?, description = ?, long_description = ?, image = ? WHERE id = ?';
+    getDb().run(sql, [title, description, long_description || '', image, req.params.id], function (err) {
         if (err) {
             res.status(400).json({ error: err.message });
             return;
