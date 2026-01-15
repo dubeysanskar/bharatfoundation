@@ -5,7 +5,7 @@
 
 .history-grid {
     display: grid;
-    grid-template-columns: 1.5fr 1fr;
+    grid-template-columns: 1.2fr 1fr;
     gap: var(--space-xl);
     align-items: start;
 }
@@ -25,6 +25,30 @@
 
 .history-text p:last-child {
     margin-bottom: 0;
+}
+
+/* Right Side - Logo and Stats */
+.history-image-section {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-lg);
+}
+
+.history-logo-wrapper {
+    display: flex;
+    justify-content: center;
+    padding: var(--space-lg);
+    background: linear-gradient(135deg, #FFF8F0 0%, #FFE4C4 100%);
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-lg);
+}
+
+.history-logo {
+    width: 180px;
+    height: 180px;
+    object-fit: contain;
+    border-radius: 50%;
+    box-shadow: 0 8px 30px rgba(139, 69, 19, 0.2);
 }
 
 /* Stats */
@@ -52,7 +76,7 @@
 .stat-number {
     display: block;
     font-family: var(--font-heading);
-    font-size: 3rem;
+    font-size: 2.5rem;
     font-weight: 700;
     color: var(--color-accent);
     margin-bottom: var(--space-xs);
@@ -69,6 +93,19 @@
     .history-grid {
         grid-template-columns: 1fr;
         gap: var(--space-lg);
+    }
+
+    .history-image-section {
+        order: -1;
+    }
+
+    .history-logo-wrapper {
+        padding: var(--space-md);
+    }
+
+    .history-logo {
+        width: 140px;
+        height: 140px;
     }
 
     .history-stats {
@@ -88,7 +125,7 @@
     }
 
     .stat-number {
-        font-size: 2.5rem;
+        font-size: 2rem;
     }
 }
 
@@ -99,5 +136,10 @@
 
     .stat-card {
         width: 100%;
+    }
+
+    .history-logo {
+        width: 120px;
+        height: 120px;
     }
 }
