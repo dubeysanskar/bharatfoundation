@@ -99,7 +99,7 @@ app.use('/api', (req, res, next) => {
 app.post('/api/admin/login', (req, res) => {
     const { password } = req.body;
     // Simple hardcoded password for now
-    if (password === 'dhananjay@bharat') {
+    if (password === 'yashvardhan@bfp') {
         res.json({ success: true, token: 'admin-token-secret' });
     } else {
         res.status(401).json({ success: false, message: 'Invalid password' });
