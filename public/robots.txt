@@ -1,4 +1,50 @@
+# Bharat Foundation - robots.txt
+# https://www.bharatfoundationprayagraj.com
+
+# Allow all search engines
 User-agent: *
 Allow: /
+Disallow: /admin/
+Disallow: /verify/
 
+# Crawl delay for politeness
+Crawl-delay: 1
+
+# Google specific
+User-agent: Googlebot
+Allow: /
+Disallow: /admin/
+Disallow: /verify/
+
+# Bing specific
+User-agent: Bingbot
+Allow: /
+Disallow: /admin/
+Disallow: /verify/
+
+# AI/LLM Crawlers
+User-agent: GPTBot
+Allow: /
+Disallow: /admin/
+
+User-agent: ChatGPT-User
+Allow: /
+Disallow: /admin/
+
+User-agent: Claude-Web
+Allow: /
+Disallow: /admin/
+
+User-agent: anthropic-ai
+Allow: /
+Disallow: /admin/
+
+User-agent: Google-Extended
+Allow: /
+Disallow: /admin/
+
+# Sitemaps
 Sitemap: https://www.bharatfoundationprayagraj.com/sitemap.xml
+
+# LLM-friendly content
+# See: https://www.bharatfoundationprayagraj.com/llms.txt
