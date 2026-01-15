@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useLanguage } from '../context/LanguageContext';
-import '../sections/Moments.css'; // Reuse existing styles
+import './Gallery.css';
 
 const Gallery = () => {
     const { t } = useLanguage();
@@ -20,39 +20,46 @@ const Gallery = () => {
     }, []);
 
     return (
-        <div style={{ padding: '2rem', minHeight: '80vh', backgroundColor: '#fce7f3', textAlign: 'center' }}>
-            <h2 className="moments-title" style={{ marginTop: '2rem' }}>{t.moments.title}</h2>
-            <div className="moments-grid" style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '1.5rem' }}>
+        <div className="gallery-page">
+            <div className="gallery-header">
+                <span className="section-label">Gallery</span>
+                <h1 className="gallery-title">{t.moments.title}</h1>
+                <p className="gallery-subtitle">
+                    Explore our journey and the impact we've created together through years of dedicated service.
+                </p>
+            </div>
+
+            <div className="gallery-grid">
                 {moments.map((moment, index) => (
-                    <div
-                        key={index}
-                        className="moment-card"
-                        style={{
-                            height: 'auto',
-                            backgroundColor: 'transparent',
-                            boxShadow: 'none',
-                            borderRadius: '12px',
-                            overflow: 'hidden',
-                            transition: 'transform 0.3s ease'
-                        }}
-                    >
-                        {moment.image && (
-                            <img
-                                src={moment.image}
-                                alt="Bharat Foundation Moment"
-                                loading="lazy"
-                                style={{
-                                    width: '100%',
-                                    height: 'auto',
-                                    display: 'block',
-                                    borderRadius: '12px',
-                                    boxShadow: '0 4px 15px rgba(0,0,0,0.1)'
-                                }}
-                            />
+                    <div key={index} className="gallery-card">
+                        {moment.image ? (
+                            <div className="gallery-image-wrapper">
+                                <img
+                                    src={moment.image}
+                                    alt={moment.title || 'Bharat Foundation Moment'}
+                                    loading="lazy"
+                                    className="gallery-image"
+                                />
+                                {moment.title && (
+                                    <div className="gallery-overlay">
+                                        <h3 className="gallery-card-title">{moment.title}</h3>
+                                    </div>
+                                )}
+                            </div>
+                        ) : (
+                            <div className="gallery-placeholder">
+                                <span>{moment.title || 'Moment'}</span>
+                            </div>
                         )}
                     </div>
                 ))}
             </div>
+
+            {moments.length === 0 && (
+                <div className="gallery-empty">
+                    <p>No moments to display yet. Check back soon!</p>
+                </div>
+            )}
         </div>
     );
 };
