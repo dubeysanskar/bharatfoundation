@@ -76,7 +76,7 @@ const Donation = () => {
         }
 
         // Check required fields
-        if (!formData.fullName || !formData.email || !formData.mobile || !formData.amount) {
+        if (!formData.fullName || !formData.mobile || !formData.amount) {
             setStatus('Please fill all required fields.');
             return false;
         }
@@ -332,26 +332,17 @@ const Donation = () => {
                                     </div>
                                 </div>
 
-                                <div className="form-group">
-                                    <label>Date of Birth</label>
-                                    <input
-                                        type="date"
-                                        name="dob"
-                                        value={formData.dob}
-                                        onChange={handleChange}
-                                    />
-                                </div>
+
 
                                 <div className="form-row">
                                     <div className="form-group">
-                                        <label>Email *</label>
+                                        <label>Email</label>
                                         <input
                                             type="email"
                                             name="email"
-                                            placeholder="Your email address"
+                                            placeholder="Your email address (optional)"
                                             value={formData.email}
                                             onChange={handleChange}
-                                            required
                                         />
                                     </div>
                                     <div className="form-group">
