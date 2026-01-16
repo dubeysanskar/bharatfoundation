@@ -4,15 +4,15 @@ import './Team.css';
 
 const Team = () => {
     const { t } = useLanguage();
-    const [founders, setFounders] = useState([]);
+    const [members, setMembers] = useState([]);
 
     useEffect(() => {
         const fetchTeam = async () => {
             try {
                 const response = await fetch('/api/members');
                 const data = await response.json();
-                const allMembers = data.data;
-                setFounders(allMembers.filter(m => m.type === 'founder'));
+                // Show all members (both founders and members)
+                setMembers(data.data || []);
             } catch (error) {
                 console.error('Error fetching team:', error);
             }
@@ -32,7 +32,7 @@ const Team = () => {
                 </div>
 
                 <div className="team-grid">
-                    {founders.map((member, index) => (
+                    {members.map((member, index) => (
                         <div key={index} className="team-card">
                             <div className="team-image-wrapper">
                                 <img
