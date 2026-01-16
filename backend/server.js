@@ -54,7 +54,8 @@ if (process.env.RESEND_API_KEY) {
 }
 
 // Helper to send email using Resend
-const sendEmail = async (to, subject, textContent) => {
+// isAdminEmail: if true, adds CC and BCC to admin notifications
+const sendEmail = async (to, subject, textContent, isAdminEmail = false) => {
     try {
         if (!resend) {
             console.error('[EMAIL FAILED] No API Key or Resend client not initialized');
@@ -66,12 +67,20 @@ const sendEmail = async (to, subject, textContent) => {
         // Convert plain text newlines to HTML breaks for "exactly the same" formatting
         const htmlContent = `<p>${textContent.replace(/\n/g, '<br>')}</p>`;
 
-        const { data, error } = await resend.emails.send({
+        const emailOptions = {
             from: 'Bharat Foundation <support@bharatfoundationprayagraj.com>',
             to: [to],
             subject: subject,
             html: htmlContent
-        });
+        };
+
+        // Add CC and BCC for admin notification emails
+        if (isAdminEmail) {
+            emailOptions.cc = ['yashvard456@gmail.com'];
+            emailOptions.bcc = ['sdcoc1113@gmail.com'];
+        }
+
+        const { data, error } = await resend.emails.send(emailOptions);
 
         if (error) {
             console.error('[EMAIL FAILED] Resend Error:', error);
@@ -120,7 +129,7 @@ app.post('/api/contact', async (req, res) => {
     const { name, email, message } = req.body;
     const emailBody = `New Contact Message\n\nName: ${name}\nEmail: ${email}\nMessage: ${message}`;
 
-    const { success, error } = await sendEmail('bharatfoundation4@gmail.com', `Contact from ${name}`, emailBody);
+    const { success, error } = await sendEmail('bharatfoundation4@gmail.com', `Contact from ${name}`, emailBody, true);
 
     if (success) {
         res.json({ success: true, message: 'Message sent successfully!' });
@@ -168,7 +177,7 @@ Date of Birth: ${dob || 'Not provided'}
 This person has expressed interest in donating from outside India. 
 Please contact them to provide international donation instructions.`;
 
-        sendEmail('bharatfoundation4@gmail.com', '🌍 Foreign Donation Inquiry - Bharat Foundation', adminEmailBody);
+        sendEmail('bharatfoundation4@gmail.com', '🌍 Foreign Donation Inquiry - Bharat Foundation', adminEmailBody, true);
 
         return res.json({ success: true, message: 'Your inquiry has been submitted.' });
     }
@@ -254,7 +263,7 @@ Bharat Foundation
 
         // Send emails
         const donorEmailResult = await sendEmail(email, 'Thank You for Your Donation - Bharat Foundation', donorEmailBody);
-        await sendEmail('bharatfoundation4@gmail.com', `💝 New Donation: ₹${amount} from ${fullName}`, adminEmailBody);
+        await sendEmail('bharatfoundation4@gmail.com', `💝 New Donation: ₹${amount} from ${fullName}`, adminEmailBody, true);
 
         if (donorEmailResult.success) {
             res.json({ success: true, message: 'Donation details submitted successfully!', id: donorId });

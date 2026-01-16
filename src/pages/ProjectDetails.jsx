@@ -139,23 +139,7 @@ for our community.`;
                             </div>
                         </section>
 
-                        <section className="project-section impact-section">
-                            <h2>Impact & Progress</h2>
-                            <div className="impact-grid">
-                                <div className="impact-card">
-                                    <span className="impact-number">100+</span>
-                                    <span className="impact-label">Lives Touched</span>
-                                </div>
-                                <div className="impact-card">
-                                    <span className="impact-number">20+</span>
-                                    <span className="impact-label">Volunteers</span>
-                                </div>
-                                <div className="impact-card">
-                                    <span className="impact-number">2</span>
-                                    <span className="impact-label">Years Active</span>
-                                </div>
-                            </div>
-                        </section>
+
                     </div>
 
                     <aside className="project-sidebar">

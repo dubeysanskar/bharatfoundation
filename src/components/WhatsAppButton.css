@@ -1,0 +1,51 @@
+/* WhatsApp Floating Button - Desktop Only */
+.whatsapp-float {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: #25D366;
+    color: white;
+    padding: 12px 20px;
+    border-radius: 50px;
+    text-decoration: none;
+    box-shadow: 0 4px 20px rgba(37, 211, 102, 0.4);
+    transition: all 0.3s ease, opacity 0.3s ease, transform 0.3s ease;
+    font-weight: 600;
+    font-size: 0.9375rem;
+    opacity: 0;
+    transform: translateY(20px);
+    pointer-events: none;
+}
+
+.whatsapp-float.visible {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+}
+
+.whatsapp-float:hover {
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: 0 8px 30px rgba(37, 211, 102, 0.5);
+    background: #20BA5C;
+}
+
+.whatsapp-icon {
+    width: 24px;
+    height: 24px;
+    flex-shrink: 0;
+}
+
+.whatsapp-text {
+    white-space: nowrap;
+}
+
+/* Hide on mobile - shown in footer instead */
+@media (max-width: 768px) {
+    .whatsapp-float {
+        display: none;
+    }
+}

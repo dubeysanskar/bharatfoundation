@@ -4,6 +4,7 @@ import { LanguageProvider } from './context/LanguageContext';
 import './App.css';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
+import WhatsAppButton from './components/WhatsAppButton';
 import Hero from './sections/Hero';
 import History from './sections/History';
 
@@ -302,6 +303,7 @@ const AppLayout = () => {
         <Route path="/terms" element={<TermsConditionsPage />} />
       </Routes>
       {!isAdminPage && <Footer />}
+      {!isAdminPage && <WhatsAppButton />}
     </div>
   );
 };

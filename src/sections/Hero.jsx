@@ -24,33 +24,22 @@ const Hero = () => {
         return () => clearInterval(interval);
     }, [mottos.length]);
 
-    // Scroll blur effect for hero image
+    // Scroll opacity effect - decrease to 80%
     useEffect(() => {
         const handleScroll = () => {
             if (heroImageRef.current) {
                 const scrollY = window.scrollY;
-                const maxBlur = 20;
-                const maxOpacity = 1;
-                const fadeStart = 100;
-                const fadeEnd = 600;
+                const maxScroll = 300; // Full effect at 300px scroll
+                const minOpacity = 0.5; // Minimum 50% opacity
 
-                if (scrollY < fadeStart) {
-                    heroImageRef.current.style.filter = 'blur(0px)';
-                    heroImageRef.current.style.opacity = '1';
-                } else if (scrollY >= fadeStart && scrollY <= fadeEnd) {
-                    const progress = (scrollY - fadeStart) / (fadeEnd - fadeStart);
-                    const blur = progress * maxBlur;
-                    const opacity = maxOpacity - progress;
-                    heroImageRef.current.style.filter = `blur(${blur}px)`;
-                    heroImageRef.current.style.opacity = `${opacity}`;
-                } else {
-                    heroImageRef.current.style.filter = `blur(${maxBlur}px)`;
-                    heroImageRef.current.style.opacity = '0';
-                }
+                const progress = Math.min(scrollY / maxScroll, 1);
+                const opacity = 1 - (progress * (1 - minOpacity));
+
+                heroImageRef.current.style.opacity = opacity;
             }
         };
 
-        window.addEventListener('scroll', handleScroll);
+        window.addEventListener('scroll', handleScroll, { passive: true });
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
@@ -92,20 +81,17 @@ const Hero = () => {
                         </button>
                     </div>
                 </div>
-
-                <div className="hero-scroll">
-                    <span>Scroll Down</span>
-                    <div className="scroll-arrow">↓</div>
-                </div>
             </section>
 
-            {/* Hero Image with Scroll Blur Effect */}
-            <div className="hero-image-section" ref={heroImageRef}>
+            {/* Hero Image with Scroll Opacity Effect */}
+            <div className="hero-image-section">
                 <img
+                    ref={heroImageRef}
                     src="/herow.png"
                     alt="Bharat Foundation"
                     className="hero-image"
                 />
+                <div className="hero-image-overlay"></div>
             </div>
         </>
     );
