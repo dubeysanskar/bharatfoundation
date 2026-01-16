@@ -118,7 +118,7 @@ app.post('/api/admin/login', (req, res) => {
 // --- UPLOAD API ---
 app.post('/api/upload', upload.single('image'), (req, res) => {
     if (req.file) {
-        res.json({ success: true, imageUrl: `http://localhost:5000/uploads/${req.file.filename}` });
+        res.json({ success: true, imageUrl: `/uploads/${req.file.filename}` });
     } else {
         res.status(400).json({ success: false, message: 'No file uploaded' });
     }
